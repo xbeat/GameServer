@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css?family=Barlow+Condensed:400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+html {
+  font-family: "Roboto";
+  font-size: 14px;
+  color:#fff;
+  font-family:sans-serif;
+  height: 100%
+  margin:0;
+   -ms-touch-action : none;
+      touch-action  : none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;  
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  margin: 0px;
+  z-index: -1;
+}
+
+.xbeat-logo-wrapper{
+    position: absolute;
+    top: 40px;
+    right: 60px;
+    width: 160px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    opacity: .9;
+    border-radius: 44px;
+}
+ 
+.xbeat-logo-up {
+    position: relative;
+    width: 120px;
+    margin: auto;
+}
+
+#info {
+  position: absolute;
+  top: 0px; 
+  width: 100%;
+  padding: 5px;
+}
+
+#data {
+  position: absolute;
+  top: 80px;
+  width: 100%;
+  padding: 5px;
+}
+
+.ac {  /* prevent dat-gui from being selected */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.control-disabled {
+  color: #888;
+  text-decoration: line-through;
+}   
+
+.st1 {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10;
+}
+
+/* 
+ * Control Panel 
+ */
+ul.container-controls {
+  width: 200px;
+  margin: 0 auto;
+  padding: 25px 0px 0px 0px;
+}
+
+ul.container-controls li {
+  width: 60px;
+  display: inline-block;
+}
+
+ul.object-controls {
+  width: 100%;
+  display: block;
+  float: left;
+  margin-top: 0px;
+}
+
+ul.object-controls li {
+  width: 50%;
+  float: left;
+  text-align: center;
+  padding: 5px 0px;
+}
+
+ul.object-controls a.object > p {
+  margin: 0px;
+}
+
+ul.create-objects li {
+  width: 50%;
+  float: left;
+  padding: 10px 0px;
+}
+
+/*
+* Menu Upper
+*/
+.wrapperCamera {
+  position: absolute;
+  top: 0px;
+  display: flex;
+  width: 900px;
+  height: 110px;
+  margin: -170px auto;
+  left: 0;
+  right: 0;
+  background: rgba( 65, 12, 51, 0.8 );
+  border-radius: 18px;
+  padding: 0;
+  transition: margin .5s;
+  -ms-touch-action: none;
+    touch-action: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 5;
+}
+
+.icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
+  margin: 15px;
+  border-radius: 50%;
+  transition: transform .4s;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 55px;
+  color: #fff;
+}
+
+.phone {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.mail {
+  background: rgba(55, 55, 225, 0.3);
+}
+
+.settings{
+  background-color: #a542fd;
+}
+

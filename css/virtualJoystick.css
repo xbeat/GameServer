@@ -1,0 +1,58 @@
+#joystickStatic,
+#joystickDynamic {
+	-ms-touch-action : none ;
+	  touch-action : none ;
+	-webkit-user-select: none;
+	 -moz-user-select: none;
+	  -ms-user-select: none;
+	      user-select: none;
+	position: absolute;
+}
+
+#joystickStatic {
+	left: 1450px;
+	top: 650px;
+}
+
+.virtualJoystic-stick {
+	position: absolute;
+	top: calc( 50% - 32px );
+	left: calc( 50% - 32px );
+	height: 64px;
+	width: 64px;
+	border-radius: 100%;
+	background: rgba( 210, 210, 210, 0.50 );
+	transition: background 0.3s;
+	will-change: transform;
+	touch-action: none;
+	cursor: pointer;
+};
+
+.virtualJoystick{
+  -ms-touch-action: none ;
+      touch-action: none ;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.virtualJoystick-svg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events:none;
+  opacity: .5;
+}
+
+.virtualJoystick-arrowUp,
+.virtualJoystick-arrowRight,
+.virtualJoystick-arrowDown,
+.virtualJoystick-arrowLeft{
+  fill: #ccc;
+}
+
+.virtualJoystick-circle{
+  fill: none;
+  stroke: #ccc;
+}			

@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400');
+
+body, html {
+	margin: 0px;
+	padding: 0px;
+	background-color: #343435;
+	color: #202020;
+	font-family: "Montserrat", "Helvetica", "Open Sans", "Arial";
+	font-size: 13px;
+}
+
+#canvas {
+	position: absolute; 
+	top:60px;
+	left:365px;
+}
+
+.status {
+	position:relative;
+	z-index:1;
+}
+
+/* Button */
+
+.buttonContainer{
+	display: flex;
+	flex-direction: column;
+}
+
+button {
+	font-size: 0.9em;
+	font-familly: "Open Sans", sans-serif;
+	color: white;
+	border: none;
+	outline: none;
+	border-radius: 0.3em;
+	padding: 0.7em 0.8em;
+	margin: 0.3em;
+	cursor: pointer;
+	width:180px;
+	z-index:1;
+}
+
+.blue{
+	background-color: #3498db;
+}
+
+.blue:hover {
+	background-color: #2980b9;
+}
+
+.blue:active {
+	background-color: #22638e;
+}
+
+/* Dashboard */
+p {
+	margin: 0;
+	padding: 0;
+}
+
+.dashboardContainer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	position: absolute;
+	top: 680px;
+	left: 365px;
+}
+
+.container {
+	padding: 0;
+	max-width: 960px;
+	width: 100%;
+	display: flex;
+}
+
+.card-list {
+	margin-top: 15px;
+	width: 100%;
+}
+
+.card-list:before,
+.card-list:after {
+	content: " ";
+	display: table;
+}
+
+.card-list:after {
+	clear: both;
+}
+
+.card {
+	margin: 5px;
+	border-radius: 8px;
+	color: white;
+	float: left;
+	padding: 10px;
+	position: relative;
+	width: 25%;
+}
+
+.card .stat {
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	font-size: 8px;
+	margin-top: 25px;
+	padding: 10px 10px 0;
+	text-transform: uppercase;
+}
+
+.card .title {
+	display: inline-block;
+	font-size: 8px;
+	padding: 10px 10px 0;
+	text-transform: uppercase;
+}
+
+.card .value {
+	font-size: 28px;
+	padding: 0 10px;
+}
+
+.card.blue {
+	background-color: #2298f1;
+}
+
+.card.green {
+	background-color: #66b92e;
+}
+
+.card.orange {
+	background-color: #da932c;
+}
+
+.card.red {
+	background-color: #d65b4a;
+}
+
+.projects {
+	background-color: #273142;
+	margin: 4px;
+	width: 100%;
+}
+
+.projects-inner {
+	border: 1px solid #313d4f;
+	border-radius: 4px;
+	width: 100%;
+}
+
+.projects-header {
+	color: white;
+	padding: 22px;
+}
+
+.projects-header .count,
+.projects-header .title {
+	display: inline-block;
+}
+
+.projects-header .count {
+	color: #738297;
+}
+
+.projects-header .glyphicon {
+	cursor: pointer;
+	float: right;
+	font-size: 16px;
+	margin: 5px 0;
+}
+
+.projects-header .title {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	font-size: 21px;
+}
+
+.projects-header .title + .count {
+	margin-left: 5px;
+}
+
+.projects-table {
+	width: 100%;
+}
+
+.projects-table td,
+.projects-table th {
+	color: white;
+	padding: 10px 22px;
+	vertical-align: middle;
+}
+
+.projects-table td p {
+	font-size: 12px;
+}
+
+.projects-table td p:last-of-type {
+	color: #738297;
+	font-size: 11px;
+}
+
+.projects-table th {
+	background-color: #313d4f;
+}
+
+.projects-table tr:not(:last-of-type) {
+	border-bottom: 1px solid #313d4f;
+}
+
+
+.projects-table .status > form {
+	float: right;
+}
+
+.projects-table .status-text {
+	display: inline-block;
+	font-size: 12px;
+	margin: 11px 0;
+	padding-left: 20px;
+	position: relative;
+}
+
+.projects-table .status-text:before {
+	border: 3px solid;
+	border-radius: 50%;
+	content: "";
+	height: 14px;
+	left: 0;
+	position: absolute;
+	top: 1px;
+	width: 14px;
+}
+
+.projects-table .status-text.status-blue:before {
+	border-color: #1c93ed;
+}
+
+.projects-table .status-text.status-green:before {
+	border-color: #66b92e;
+}
+
+.projects-table .status-text.status-orange:before {
+	border-color: #da932c;
+}
+
+.projects-table .status-text.status-red:before {
+	border-color: #d65b4a;
+}
+
+.selectric {
+	background-color: transparent;
+	border-color: #313d4f;
+	border-radius: 4px;
+}
+
+.selectric .label {
+	color: #738297;
+	line-height: 34px;
+	margin-right: 10px;
+	text-align: left;
+}
+
+.selectric-wrapper {
+	float: right;
+	width: 150px;
+}
+
+.danger-item {
+	border-left: 4px solid #a84d43;
+}
+
+.danger-text {
+	color: #a84d43 !important;
+}
+
+/* table plaayers */
+h1 {
+	font-weight: 100;
+	color: #ffffff;
+	margin: 20px 0;
+	font-family: 'Roboto', sans-serif;
+}
+
+#grids {
+	width: 300px;
+	display: grid;
+	font-family: 'Roboto', sans-serif;
+	position: absolute;
+	left: 1400px;
+}
+
+.subgrid {
+	width: 300px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.inside {
+	width: 150px;
+	height: 40px;
+	line-height: 40px;
+	text-align:center;
+	font-size: 1em;
+	color: #ffffff;
+	margin-right: 4px;
+	margin-bottom: 4px;
+	border-radius: 4px;
+}
+
+.inside.red {
+	background-color: #d65b4a;
+}
+
+.inside.blue {
+	background-color: #2298f1;
+}
+
+.inside.green {
+	background-color: #66b92e;
+}
+
+.inside.orange {
+	background-color: #da932c;
+}
+
+/* button */
+.virtualButton{
+	font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
+	position: absolute;
+	font-weight: 800;
+	width: 65px; 
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	background: rgba( 255, 255, 255, .5 );
+	border-radius: 50%;
+	-ms-touch-action: none;
+	touch-action: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#buttonShoot{
+	left: 1430px;
+	top: 780px;
+}
+
+#buttonReset{
+	left: 1520px;
+	top: 780px;
+}
+
