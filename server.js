@@ -8,6 +8,7 @@ const uuidv4 = require( 'uuid/v4' );
 const url = require( 'url' );
 
 const GameServer = require( './modules/GameServer.js' );
+let Positioning = require( './modules/Positioning.js' );
 
 const app = express();
 const webServer = http.createServer( app );
@@ -26,9 +27,11 @@ app.get( '/', function( req, res ){
 
 });
 
-class Server {
+class Server extends Positioning{
 
 	constructor(){
+
+		super();
 
 		this.User = require( './modules/User.js' );
 		this.wss = new WebSocket.Server( { server: webServer } );
@@ -36,6 +39,7 @@ class Server {
 		this.allConnectedUsers = new Map();
 		this.gameServer = new Map();
 		this.webSockets = new Object();
+		this.positioning = new Positioning();
 
 		this.wss.on( 'connection', function connection( ws, req ) {
 
@@ -193,6 +197,11 @@ class Server {
 
 	onMessage( obj, ws ) {
 
+		function getRandomInt( min, max ){
+
+			return Math.random() * ( max - min ) + min;
+		};		
+
 		let gs = this.gameServer.get( obj.player.lobby );
 		if ( gs == undefined ) return false;
 		
@@ -253,6 +262,128 @@ class Server {
 						}));
 			};			
 		
+		};
+
+		/**
+		* Set all player Random position.
+		* 
+		*/
+		if ( obj.player.state == "goRandom" ){
+
+			for ( var i = 0; i < gs.playerNum; i++ ){
+
+				gs.players[ i ].boid.destination.x = getRandomInt( 60, 960 );
+				gs.players[ i ].boid.destination.y = getRandomInt( 40, 580 );
+				gs.players[ i ].state.popState();
+				gs.players[ i ].state.pushState( "addQueue" );			
+
+			};
+		
+		};
+		
+		/**
+		* Set all player Home position.
+		* 
+		*/		
+		if ( obj.player.state == "goHome" ){
+
+			for ( let i = 0; i < gs.playerNum; i++ ){
+
+				let distribute = function( val, max, min ) { return ( val - min ) / ( max - min ); }; //normalize
+				let value = distribute( i, gs.playerNum, 0 ) * 18;
+				let row = parseInt( value / 6 );
+				let column = value % 6;      
+				gs.players[ i ].boid.destination.x = column * 150 + getRandomInt( 60,90 ); 
+				gs.players[ i ].boid.destination.y = row * 187.5 + getRandomInt( 90, 120 );
+				gs.players[ i ].state.popState();
+				gs.players[ i ].state.pushState( "addQueue" );
+
+			};		
+
+		};
+
+		/**
+		* Set all player formation position.
+		* 
+		*/
+		if ( obj.player.state == "goFormation" ){
+
+			let formation = [
+				[ 5, 4, 1 ],
+				[ 4, 5, 1 ],
+				[ 4, 4, 2 ],
+				[ 4, 4, 1, 1 ],
+				[ 4, 3, 3 ],
+				[ 4, 3, 2 ],
+				[ 4, 2, 3, 1 ],
+				[ 4, 2, 2, 2 ],
+				[ 4, 2, 1, 3 ],
+				[ 4, 2, 4, 1 ],
+				[ 4, 1, 3, 2 ],
+				[ 4, 1, 2, 3 ],
+				[ 3, 5, 2, 2 ],
+				[ 3, 5, 1, 1 ],
+				[ 3, 4, 1, 2 ],
+				[ 3, 4, 3 ],
+				[ 3, 4, 2, 1 ]
+			];
+
+			let index = 1;
+			let width = 1000;
+			let height = 600;
+			let	stepX = 0;
+			let stepY = 0;
+
+			let pointerFormation = this.schemaRedTeam;
+
+			for ( let c = 0; c < formation[ pointerFormation ].length; c++ ) {
+				stepX += ( width / 2 ) / formation[ pointerFormation ].length;
+				for ( let i = 0; i < formation[ pointerFormation ][ c ]; i++ ){
+					let step = height / formation[ pointerFormation ][ c ]; 
+					stepY = step * ( i + 1 ) - step / 2;
+					gs.players[ index ].boid.destination.x = stepX - 50;
+					gs.players[ index ].boid.destination.y = stepY;
+					gs.players[ index ].state.popState();
+					gs.players[ index ].state.pushState( "wait" );
+					index++;
+				};
+				stepY = 0;
+			};
+
+			pointerFormation = this.schemaBlueTeam;
+
+			for ( let c = 0; c < formation[ pointerFormation ].length; c++ ) {
+				stepX += ( width / 2 ) / formation[ pointerFormation ].length;
+				for ( let i = 0; i < formation[ pointerFormation ][ c ]; i++ ){
+					var step = height / formation[ pointerFormation ][ c ]; 
+					stepY = step * ( i + 1 ) - step / 2;
+					gs.players[ index ].boid.destination.x = stepX - 115;
+					gs.players[ index ].boid.destination.y = stepY;
+					gs.players[ index ].state.popState();
+					gs.players[ index ].state.pushState( "wait" );					
+					index++;
+				};
+				stepY = 0;
+			};
+
+			//goalkeeper
+			gs.players[ 0 ].boid.destination.x = 30;
+			gs.players[ 0 ].boid.destination.y = 300;
+			gs.players[ 0 ].state.popState();
+			gs.players[ 0 ].state.pushState( "wait" );
+
+			gs.players[ 21 ].boid.destination.x = 950;
+			gs.players[ 21 ].boid.destination.y = 300;
+			gs.players[ 21 ].state.popState();
+			gs.players[ 21 ].state.pushState( "wait" );	
+
+			for ( let i = 0; i < gs.playerNum; i++ ){
+
+				gs.players[ i ].state.popState();
+				gs.players[ i ].state.pushState( "addQueue" );
+
+			};	
+
 		};
 
 	};

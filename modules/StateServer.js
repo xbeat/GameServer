@@ -87,6 +87,7 @@ class Action {
 			wait:		  "wait",
 			controlled:	  "controlled",
 			dropControl:  "dropControl",
+			addQueue:  	  "addQueue"
 		};
 
 		this.width = 1000;
@@ -157,6 +158,43 @@ class Action {
 
 		this.state.popState();
 		this.state.pushState( this.actions.setRotate );
+
+		let message = JSON.stringify( {		
+			player: {
+				index: this.player.index,
+				destination: {
+					x: this.player.boid.destination.x,
+					y: this.player.boid.destination.y
+				},
+				position: {
+					x: this.player.boid.position.x,
+					y: this.player.boid.position.y
+				},
+				velocity: {
+					x: this.player.boid.velocity.x,
+					y: this.player.boid.velocity.y
+				},
+				rotate: this.player.boid.rotate,
+				team: this.player.team,
+				color: this.player.color,
+				state: this.player.state.getCurrentState(),
+				lobby: this.player.lobby
+			},
+			state: "update"
+		} );
+
+		this.state.queue.add( message, "redTeam" );
+		this.state.queue.add( message, "blueTeam" );
+
+	};
+
+	/*
+	* add queue
+	*/
+	addQueue(){
+
+		this.state.popState();
+		this.state.pushState( this.actions.arrive );
 
 		let message = JSON.stringify( {		
 			player: {

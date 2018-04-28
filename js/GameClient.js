@@ -83,13 +83,14 @@ class GameClient extends VirtualJoystick {
 	init( lobby, team, schemaRedTeam, schemaBlueTeam ) {
 
 		this.team = team;
+		this.lobby = lobby;
 
 		for( let i = 0; i < this.playerNum; i++ ) {
 
 			this.players.push( new Object() );
 
 			this.players[i].index = i;
-			this.players[i].lobby = lobby;
+			this.players[i].lobby = this.lobby;
 			this.players[i].boid = new Boid();
 			this.players[i].boid.destination = new Vec2();
 			this.players[i].radius = 8;
@@ -207,68 +208,5 @@ class GameClient extends VirtualJoystick {
 
 	};
 
-	formation( schemaRedTeam, schemaBlueTeam ){
-
-		var formation = [
-			[ 5, 4, 1 ],
-			[ 4, 5, 1 ],
-			[ 4, 4, 2 ],
-			[ 4, 4, 1, 1 ],
-			[ 4, 3, 3 ],
-			[ 4, 3, 2 ],
-			[ 4, 2, 3, 1 ],
-			[ 4, 2, 2, 2 ],
-			[ 4, 2, 1, 3 ],
-			[ 4, 2, 4, 1 ],
-			[ 4, 1, 3, 2 ],
-			[ 4, 1, 2, 3 ],
-			[ 3, 5, 2, 2 ],
-			[ 3, 5, 1, 1 ],
-			[ 3, 4, 1, 2 ],
-			[ 3, 4, 3 ],
-			[ 3, 4, 2, 1 ]
-		];
-
-		let index = 1;
-		let width = 1000;
-		let height = 600;
-		let	stepX = 0;
-		let stepY = 0;
-
-		let pointerFormation = schemaRedTeam;
-
-		for ( let c = 0; c < formation[ pointerFormation ].length; c++ ) {
-			stepX += ( width / 2 ) / formation[ pointerFormation ].length;
-			for ( let i = 0; i < formation[ pointerFormation ][ c ]; i++ ){
-				let step = height / formation[ pointerFormation ][ c ]; 
-				stepY = step * ( i + 1 ) - step / 2;
-				this.players[index].boid.destination.x = stepX - 50;
-				this.players[index].boid.destination.y = stepY;
-				index++;
-			};
-			stepY = 0;
-		};
-
-		pointerFormation = schemaBlueTeam;
-
-		for ( let c = 0; c < formation[ pointerFormation ].length; c++ ) {
-			stepX += ( width / 2 ) / formation[ pointerFormation ].length;
-			for ( let i = 0; i < formation[ pointerFormation ][ c ]; i++ ){
-				var step = height / formation[ pointerFormation ][ c ]; 
-				stepY = step * ( i + 1 ) - step / 2;
-				this.players[ index ].boid.destination.x = stepX - 115;
-				this.players[ index ].boid.destination.y = stepY;
-				index++;
-			};
-			stepY = 0;
-		};
-
-		//goalkeeper
-		this.players[ 0 ].boid.destination.x = 30;
-		this.players[ 0 ].boid.destination.y = 300;
-		this.players[ 21 ].boid.destination.x = 950;
-		this.players[ 21 ].boid.destination.y = 300;
-
-	};	
 
 };

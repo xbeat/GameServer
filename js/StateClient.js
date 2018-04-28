@@ -6,7 +6,7 @@ class State {
 		this.player = player;
 		this.team = team;
 		this.action = new Action( this );
-	
+
 	};
 
 	update( delta ){

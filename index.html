@@ -341,41 +341,54 @@
 
 		});
 
-
-		function getRandomInt( min, max ){
-
-			return Math.random() * ( max - min ) + min;
-		};
-
 		document.getElementById( "home" ).addEventListener( "click", function(){
 
-			for ( let i = 0; i < gameClient.playerNum; i++ ){
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: gameClient.lobby,
+						team: gameClient.team,
+						state: "goHome"
+					}
 
-				var distribute = function( val, max, min ) { return ( val - min ) / ( max - min ); }; //normalize
-				var value = distribute( i, gameClient.playerNum, 0 ) * 18;
-				var row = parseInt( value / 6 );
-				var column = value % 6;      
-				gameClient.players[i].boid.destination.x = column * 150 + getRandomInt( 60,90 ); 
-				gameClient.players[i].boid.destination.y = row * 187.5 + getRandomInt( 90, 120 );
+				}));
 
-			};
+			};			
 
 		});
 
 		document.getElementById( "random" ).addEventListener( "click", function(){
 
-			for ( var i = 0; i < gameClient.playerNum; i++ ){
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: gameClient.lobby,
+						team: gameClient.team,
+						state: "goRandom"
+					}
 
-				gameClient.players[i].boid.destination.x = getRandomInt( 60, 960 );
-				gameClient.players[i].boid.destination.y = getRandomInt( 40, 580 );
+				}));
 
-			};
+			};	
 
 		});
 
 		document.getElementById( "formation" ).addEventListener( "click", function(){
 
-			console.log( "formation" );
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: gameClient.lobby,
+						team: gameClient.team,
+						state: "goFormation"
+					}
+
+				}));
+
+			};	
 
 		});
 
