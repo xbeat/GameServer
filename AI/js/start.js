@@ -3,13 +3,11 @@
 
 // ------------ Globals ------------
 let RAF_AI;
-//let RAF;
+
 let EXECUTERAF = true;
 
 let cxClient = 460;//600
 let cyClient = 290;//380
-let scene3D = null;
-//let heatMap = null;
 
 let Color = {
 	WHITE: "255, 255, 255",
@@ -18,10 +16,6 @@ let Color = {
 
 let canvas = document.createElement( "canvas" );
 document.body.appendChild( canvas );
-//canvas.style.position = "absolute";
-//canvas.style.top = "20px";
-//canvas.style.left = "20px";
-//canvas.style.zIndex = "-97";
 
 canvas.id = "canvasPitchAI";
 canvas.style.position = "fixed";
@@ -38,13 +32,7 @@ context.clearRect( 0, 0, canvas.width, canvas.height );
 
 //---------------- init -----------------
 gdi.StartDrawing( context );
-
-//gdi.fillRect( Color.WHITE, 0, 0, canvas.width, canvas.height );
-
 let g_SoccerPitch = new SoccerPitch( cxClient, cyClient );
-
-//g_SoccerPitch.Render();
-
 gdi.StopDrawing( context );
 
 //--------------- update ---------------
@@ -55,24 +43,22 @@ timer.Start();
 //----------- Entry Point -----------
 document.addEventListener( "DOMContentLoaded", function( event ) {
 	
-	//----------------- start engine ---------------
-
     window.addEventListener( "load", function(){
 
 		( function step() {
+
 	   		RAF_AI = requestAnimationFrame( step );
 
 		    //update
 		    if ( timer.ReadyForNextFrame() ) {
 		    	
 		    	if ( EXECUTERAF === true ){
+
 			        g_SoccerPitch.Update();
-			        //render
 			        g_SoccerPitch.Render();
-			        //panel.revalidate();
-			        //panel.repaint();
 
 		    	};
+
 		    };
 			
 		}());

@@ -71,5 +71,5 @@ class EntityManager {
     };
 };
 
-let EntityMgr = new EntityManager();
+global.EntityMgr = new EntityManager();
 

@@ -19,7 +19,7 @@ let ttos = function( s ){
 };
 
 //----------- Globals
-class Global{};
+let Global = new Object();
 Global.objReceiverRef = new Object();
 Global.m_iNextValidID = 0;
 Global.AllPlayers = new Array();
