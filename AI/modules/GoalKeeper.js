@@ -74,7 +74,7 @@ class GoalKeeper extends PlayerBase {
 
         //enforce a non-penetration constraint if desired
         if ( Prm.bNonPenetrationConstraint ) {
-            EnforceNonPenetrationContraint( this, Global.AllPlayers );
+            EntityFunctionTemplates.EnforceNonPenetrationContraint( this, AllPlayers );
         };
 
         //update the heading if the player has a non zero velocity
@@ -178,16 +178,16 @@ class GoalKeeper extends PlayerBase {
 
         //draw the ID
         if ( Prm.bIDs ) {
-            gdi.TextColor( 250, 250, 250 );
-            gdi.TextAtPos( this.Pos().x - 20, this.Pos().y - 25, ttos( this.ID() ) );
+            //gdi.TextColor( 250, 250, 250 );
+            //gdi.TextAtPos( this.Pos().x - 20, this.Pos().y - 25, ttos( this.ID() ) );
         };
 
         //draw the state
         if ( Prm.bStates ) {
-			gdi.TextColor( 250, 250, 250 );
-			gdi.TransparentText();
-			gdi.TextAtPos( this.m_vPosition.x, this.m_vPosition.y - 25,
-                    new String( this.m_pStateMachine.GetNameOfCurrentState() ) );
+			//gdi.TextColor( 250, 250, 250 );
+			//gdi.TransparentText();
+			//gdi.TextAtPos( this.m_vPosition.x, this.m_vPosition.y - 25,
+            //        new String( this.m_pStateMachine.GetNameOfCurrentState() ) );
         };
     };
 
@@ -254,4 +254,5 @@ const StateMachine = require( '../modules/StateMachine.js' );
 const GlobalKeeperState = require( '../modules/GlobalKeeperState.js' );
 const SoccerTeam = require( '../modules/SoccerTeam.js' );
 const Transformation = require( '../modules/Transformation.js' );
-
+const Global = require( '../modules/Global.js' );
+const EntityFunctionTemplates = require( '../modules/EntityFunctionTemplates.js' );

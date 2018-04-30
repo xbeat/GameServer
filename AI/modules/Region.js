@@ -36,13 +36,13 @@ class Region {
     };
 
     Render( ShowID ) {
-        gdi.HollowBrush();
-        gdi.LightGreyPen();
-        gdi.Rect( this.m_dLeft, this.m_dTop, this.m_dRight, this.m_dBottom );
+        //gdi.HollowBrush();
+        //gdi.LightGreyPen();
+        //gdi.Rect( this.m_dLeft, this.m_dTop, this.m_dRight, this.m_dBottom );
 
         if ( ShowID ) {
-            gdi.TextColor( 250, 250, 250 );
-            gdi.TextAtPos( this.Center(), ttos( this.ID() ) );
+            //gdi.TextColor( 250, 250, 250 );
+            //gdi.TextAtPos( this.Center(), ttos( this.ID() ) );
         };
     };
 

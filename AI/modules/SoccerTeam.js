@@ -486,9 +486,9 @@ class SoccerTeam {
         // define(SHOW_SUPPORTING_PLAYERS_TARGET)
         if ( def( SHOW_SUPPORTING_PLAYERS_TARGET ) ) {
             if ( this.m_pSupportingPlayer != null ) {
-                gdi.BlueBrush();
-                gdi.RedPen();
-                gdi.Circle( this.m_pSupportingPlayer.Steering().Target(), 4 );
+                //gdi.BlueBrush();
+                //gdi.RedPen();
+                //gdi.Circle( this.m_pSupportingPlayer.Steering().Target(), 4 );
             };
         };
 

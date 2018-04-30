@@ -1,3 +1,5 @@
+const Defending = require( '../modules/Defending.js' );
+
 /**
  * PrepareForKickOff.js)
  */

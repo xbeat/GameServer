@@ -1,3 +1,5 @@
+const InterceptBall = require( '../modules/InterceptBall.js' );
+
 /**
  * GlobalKeeperState.js
  */
@@ -23,12 +25,12 @@ class GlobalKeeperState {
 
     OnMessage( keeper, telegram ) {
         switch ( telegram.Msg ) {
-            case Global.MessageTypes.Msg_GoHome:
+            case MessageTypes.Msg_GoHome:
                 keeper.SetDefaultHomeRegion();
                 keeper.GetFSM().ChangeState( ReturnHome.Instance() );
             break;
 
-            case Global.MessageTypes.Msg_ReceiveBall:
+            case MessageTypes.Msg_ReceiveBall:
                 keeper.GetFSM().ChangeState( InterceptBall.Instance() );
             break;
 

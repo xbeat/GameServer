@@ -71,3 +71,4 @@ module.exports = TendGoal;
 
 const InterceptBall = require( '../modules/InterceptBall.js' );
 const PutBallBackInPlay = require( '../modules/PutBallBackInPlay.js' );
+const ReturnHome = require( '../modules/ReturnHome.js' );

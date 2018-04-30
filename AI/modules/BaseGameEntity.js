@@ -18,11 +18,11 @@ class BaseGameEntity {
      */
     SetID( val ) {
         //make sure the val is equal to or greater than the next available ID
-        if ( !( val >= Global.m_iNextValidID ) ) console.log( "<BaseGameEntity::SetID>: invalid ID" );
+        if ( !( val >= m_iNextValidID ) ) console.log( "<BaseGameEntity::SetID>: invalid ID" );
 
         this.m_ID = val;
 
-        Global.m_iNextValidID = this.m_ID + 1;
+        m_iNextValidID = this.m_ID + 1;
     };
 
     //------------------------------ ctor -----------------------------------------
@@ -62,12 +62,12 @@ class BaseGameEntity {
     //virtual void Read (std::ifstream& is){}
     //use this to grab the next valid ID
     static GetNextValidID() {      
-        return Global.m_iNextValidID;
+        return m_iNextValidID;
     };
 
     //this can be used to reset the next ID
     ResetNextValidID() {
-        Global.m_iNextValidID = 0;
+        m_iNextValidID = 0;
     };
 
     Pos() {

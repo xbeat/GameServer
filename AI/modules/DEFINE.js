@@ -4,12 +4,12 @@
  * 
  */
  // Loggin flags
-global.SHOW_TEAM_STATE = false;
-global.SHOW_SUPPORTING_PLAYERS_TARGET = false;
-global.SHOW_MESSAGING_INFO = false;
-global.DEBUG_TEAM_STATES = false;
-global.GOALY_STATE_INFO_ON = false;
-global.PLAYER_STATE_INFO_ON = false;
+global.SHOW_TEAM_STATE = true;
+global.SHOW_SUPPORTING_PLAYERS_TARGET = true;
+global.SHOW_MESSAGING_INFO = true;
+global.DEBUG_TEAM_STATES = true;
+global.GOALY_STATE_INFO_ON = true;
+global.PLAYER_STATE_INFO_ON = true;
 
 global.def = function( D ) {
 	return D;

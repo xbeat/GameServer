@@ -1,3 +1,5 @@
+const Vector2D = require( '../modules/Vector2D.js' );
+
 /**
  * EntityFunctionTemplates.js
  */
@@ -132,3 +134,5 @@ class EntityFunctionTemplates {
         };//next entity
     };
 };
+
+module.exports = EntityFunctionTemplates;

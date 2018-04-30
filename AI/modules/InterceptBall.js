@@ -1,6 +1,3 @@
-const PutBallBackInPlay = require( '../modules/PutBallBackInPlay.js' );
-const ReturnHome = require( '../modules/ReturnHome.js' );
-
 /**
  *  In this state the GP will attempt to intercept the ball using the
  *  pursuit steering behavior, but he only does so so long as he remains
@@ -57,3 +54,6 @@ class InterceptBall {
 };
 
 module.exports = InterceptBall;
+
+const PutBallBackInPlay = require( '../modules/PutBallBackInPlay.js' );
+const ReturnHome = require( '../modules/ReturnHome.js' );

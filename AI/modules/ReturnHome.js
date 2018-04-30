@@ -40,3 +40,7 @@ class ReturnHome {
         return false;
     };
 };
+
+module.exports = ReturnHome;
+
+const TendGoal = require( '../modules/TendGoal.js' );

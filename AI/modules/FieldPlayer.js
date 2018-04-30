@@ -6,6 +6,8 @@ const Regulator = require( '../modules/Regulator.js' );
 const utils = require( '../modules/utils.js' );
 const Transformation = require( '../modules/Transformation.js' );
 const SoccerTeam = require( '../modules/SoccerTeam.js' );
+const EntityFunctionTemplates = require( '../modules/EntityFunctionTemplates.js' );
+const Global = require( '../modules/Global.js' );
 
 /**
  *   Desc:   Derived from a PlayerBase, this class encapsulates a player
@@ -120,7 +122,7 @@ class FieldPlayer extends PlayerBase {
        
         //enforce a non-penetration constraint if desired
         if ( Prm.bNonPenetrationConstraint ) {
-            EntityFunctionTemplates.EnforceNonPenetrationContraint( this, Global.AllPlayers );
+            EntityFunctionTemplates.EnforceNonPenetrationContraint( this, AllPlayers );
         };
     };
 
@@ -221,22 +223,22 @@ class FieldPlayer extends PlayerBase {
 
         //render the state
         if ( Prm.bStates ) {
-            gdi.TextColor( 250, 250, 250 );
-            gdi.TextAtPos( this.m_vPosition.x, this.m_vPosition.y - 25,
-                    new String( this.m_pStateMachine.GetNameOfCurrentState() ) );
+            //gdi.TextColor( 250, 250, 250 );
+            //gdi.TextAtPos( this.m_vPosition.x, this.m_vPosition.y - 25,
+            //        new String( this.m_pStateMachine.GetNameOfCurrentState() ) );
         };
 
         //show IDs
         if ( Prm.bIDs ) {
-            gdi.TextColor( 250, 250, 250 );
-            gdi.TextAtPos( this.Pos().x - 20, this.Pos().y - 25, ttos( this.ID() ) );
+            //gdi.TextColor( 250, 250, 250 );
+            //gdi.TextAtPos( this.Pos().x - 20, this.Pos().y - 25, ttos( this.ID() ) );
         };
 
         if ( Prm.bViewTargets ) {
-            gdi.RedBrush();
-            gdi.Circle( this.Steering().Target(), 3 );
-            gdi.TextColor( 250, 250, 250 );
-            gdi.TextAtPos( this.Steering().Target(), ttos( this.ID() ) + " - " +  new String( this.m_pStateMachine.GetNameOfCurrentState() ) );
+            //gdi.RedBrush();
+            //gdi.Circle( this.Steering().Target(), 3 );
+            //gdi.TextColor( 250, 250, 250 );
+            //gdi.TextAtPos( this.Steering().Target(), ttos( this.ID() ) + " - " +  new String( this.m_pStateMachine.GetNameOfCurrentState() ) );
         };
     };
 

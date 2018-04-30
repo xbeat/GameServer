@@ -55,19 +55,19 @@ var ParamLoader = function() {
   this.BallWithinReceivingRange = 10.0;
 
   //debug states
-  this.bIDs = false;
-  this.bStates = false;
-  this.bRegions = false;
-  this.bSupportSpots = false;
-  this.bShowControllingTeam = false;
+  this.bIDs = true;
+  this.bStates = true;
+  this.bRegions = true;
+  this.bSupportSpots = true;
+  this.bShowControllingTeam = true;
   this.bViewTargets = false;
-  this.bHighlightIfThreatened = false;
+  this.bHighlightIfThreatened = true;
 
   this.FrameRate = 60;
 
   this.SeparationCoefficient = 10.0;
   this.ViewDistance = 30.0;
-  this.bNonPenetrationConstraint = false;
+  this.bNonPenetrationConstraint = true;
 
   this.BallWithinReceivingRangeSq = this.BallWithinReceivingRange * this.BallWithinReceivingRange;
   this.KeeperInBallRangeSq = this.KeeperInBallRange * this.KeeperInBallRange;

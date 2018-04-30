@@ -1,4 +1,6 @@
 const TreeSet = require( '../modules/TreeSet.js' );
+const Telegram = require( '../modules/Telegram.js' );
+const FrameCounter = require( '../modules/FrameCounter.js' );
 
 /**
  * Desc:   A message dispatcher. Manages messages of the type Telegram.

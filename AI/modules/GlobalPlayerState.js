@@ -1,3 +1,10 @@
+const Vector2D = require( '../modules/Vector2D.js' );
+const Global = require( '../modules/Global.js' );
+const ReceiveBall = require( '../modules/ReceiveBall.js' );
+const SupportAttacker = require( '../modules/SupportAttacker.js' );
+const Wait = require( '../modules/Wait.js' );
+const ReturnToHomeRegion = require( '../modules/ReturnToHomeRegion.js' );
+
 /**
  * 
  */
@@ -28,7 +35,7 @@ class GlobalPlayerState {
 
     OnMessage( player, telegram ) {
         switch ( telegram.Msg ) {
-            case  Global.MessageTypes.Msg_ReceiveBall:
+            case  MessageTypes.Msg_ReceiveBall:
                 //set the target
                 player.Steering().SetTarget( telegram.ExtraInfo );
 
@@ -38,7 +45,7 @@ class GlobalPlayerState {
                 return true;
             break;
 
-            case Global.MessageTypes.Msg_SupportAttacker:
+            case MessageTypes.Msg_SupportAttacker:
                 //if already supporting just return
                 if ( player.GetFSM().isInState( SupportAttacker.Instance() ) ) {
                     return true;
@@ -53,14 +60,14 @@ class GlobalPlayerState {
                 return true;
             break;
 
-            case Global.MessageTypes.Msg_Wait:
+            case MessageTypes.Msg_Wait:
                 //change the state
                 player.GetFSM().ChangeState( Wait.Instance() );
 
                 return true;
            break;
 
-            case Global.MessageTypes.Msg_GoHome:
+            case MessageTypes.Msg_GoHome:
                 player.SetDefaultHomeRegion();
 
                 player.GetFSM().ChangeState( ReturnToHomeRegion.Instance() );
@@ -69,7 +76,7 @@ class GlobalPlayerState {
 
             break;
 
-            case Global.MessageTypes.Msg_PassToMe:
+            case MessageTypes.Msg_PassToMe:
                 //get the position of the player requesting the pass 
                 let receiver = telegram.ExtraInfo;
 
@@ -102,7 +109,7 @@ class GlobalPlayerState {
                 Dispatcher.DispatchMsg( Dispatcher.SEND_MSG_IMMEDIATELY,
                         player.ID(),
                         receiver.ID(),
-                        Global.MessageTypes.Msg_ReceiveBall,
+                        MessageTypes.Msg_ReceiveBall,
                         receiver.Pos() );
 
                 //change state   
