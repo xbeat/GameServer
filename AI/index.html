@@ -1,8 +1,129 @@
 <html>
 	<head>
-	</head>
-	<body>
-		index.html
-	<body>
-<html>
 
+		<style type="text/css">
+			.virtualButton {
+				cursor: pointer;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+
+	    <div class="virtualButton" id="buttonShoot">Shoot</div>
+	    <div class="virtualButton" id="buttonReset">Reset</div>
+	    <div class="virtualButton" id="buttonGetValue">Get Value</div>
+	    <div id="state">Data</div>
+
+	</body>
+
+	<script type="text/javascript" src="client.js"></script>
+
+	<script type="text/javascript">
+
+		"use strict";
+
+		let client = new Client();
+		let urlParams = new URLSearchParams( window.location.search );
+		let id = urlParams.get( 'id' );
+		let obj = null;
+
+		let HOST = location.origin.replace( /^http/, 'ws' );
+
+		// connecting to the web server
+		let socket = new WebSocket( HOST + '/?serverState=state', 'echo-protocol' );
+		//var socket = new WebSocket( 'ws://localhost:4000/' + id, 'echo-protocol' ); 
+
+		// listening for server response
+		socket.onmessage = function ( message ) { 
+
+			obj = JSON.parse( message.data );
+
+			if( "state" in obj.player ) {
+
+				switch( obj.player.state ) {
+					
+					case "connected":
+						document.getElementById( "state" ).innerText = "Connected";
+						client.update( { state: "Connected" } );
+						break;
+
+					case "shoot":
+					case "reset":
+					case "receive":
+					case "wait":
+						document.getElementById( "state" ).innerText = obj.player.data.player.state;
+						client.update( obj );
+						break;
+
+				};
+
+			};
+
+		};
+
+		// listening for any socket error
+		socket.onerror = function ( error ) { 
+
+			console.log( 'WebSocket error: ' + error );
+
+		};
+
+		/*
+		* listener
+		*/
+		document.getElementById( "buttonShoot" ).addEventListener( "click", function(){
+
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: obj.player.lobby,
+						team:  obj.player.team,
+						state: "shoot"
+					}
+
+				}));
+
+			};	
+
+		});
+
+		document.getElementById( "buttonReset" ).addEventListener( "click", function(){
+
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: obj.player.lobby,
+						team:  obj.player.team,
+						state: "reset"
+					}
+
+				}));
+
+			};	
+
+		});
+
+		document.getElementById( "buttonGetValue" ).addEventListener( "click", function(){
+
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: obj.player.lobby,
+						team:  obj.player.team,
+						state: "getValue"
+					}
+
+				}));
+
+			};	
+
+		});
+
+	</script>
+
+<html>

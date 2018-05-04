@@ -24,7 +24,7 @@ class Queue {
 	getValue( team ) {
 
 		if ( this.size( team ) > 0 ){
-			let action = this.first( team );
+			let action = this.last( team );
 			this.remove( team );
 			return action;
 		} else {
