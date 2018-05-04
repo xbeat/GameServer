@@ -1,198 +1,32 @@
 <html>
-<script type="text/javascript">
-	class Queue {
+	<script type="text/javascript">
+		class Objectize {
 
-		constructor() {
+			constructor() {
 
-			this.redTeam = new Array();
-			this.blueTeam = new Array();
-			this.objectCache = new Object();
-			this.cache = new Array();
-		};
+				let m_pOwner = {
 
+					FieldPlayer: {
 
-		cloneObject( obj ) {
-
-			var visitedNodes = new Array();
-			var clonedCopy = new Array();
-
-			function clone( item ) {
-
-				if ( ( typeof item === "object" || typeof item === "function" ) && !Array.isArray( item ) ) {
-
-					if ( visitedNodes.indexOf( item ) === -1 ) {
-
-						visitedNodes.push(item);
-						var cloneObject = new Object();
-
-						clonedCopy.push( cloneObject );
-
-						for ( var i in item ) {
-							if ( item.hasOwnProperty( i ) ) {
-								cloneObject[i] = clone( item[ i ] );
-							};
-						};
-
-						return cloneObject;
-
-					} else {
-
-						return "[ Circular Object ]"; //clonedCopy[ visitedNodes.indexOf( item ) ];
-					
-					};
-
-				} else if ( typeof item === "object" && Array.isArray( item ) ) {
-
-					if ( visitedNodes.indexOf( item ) === -1 ) {
-
-						var cloneArray = new Array();
-						visitedNodes.push( item );
-						clonedCopy.push( cloneArray );
-
-						for ( var j = 0; j < item.length; j++ ) {
-							cloneArray.push( clone( item[ j ] ) );
-						};
-
-						return cloneArray;
-
-					} else {
-
-						return "[ Circular Array ]"; //clonedCopy[ visitedNodes.indexOf( item ) ];
+						default_entity_type: -1,
+						id: 16,
+						m_ID: 8,
+						m_PlayerRole: "defender",
+						m_bTag: false,
+						m_dBoundingRadius: 10,
+						m_dDistSqToBall: 1250,
+						m_dMass: 3,
+						m_dMaxForce: 1,
+						m_dMaxSpeed: 1.6,
+						m_dMaxTurnRate: 0.4,
+						m_iDefaultRegion: 10,
+						m_iHomeRegion: 10,
+						m_iType: -1
 					};
 				};
-
-				return item; // not object, not array, therefore primitive
 			};
-
-			clone( obj );
-		
-			return ( clonedCopy );
 		};
-
-		add( action, team ) {
-			this[ team ].unshift( action );
-		};
-
-		remove( team ) {
-			this[ team ].pop();
-		};
-
-		first( team ) {
-			return this[ team ][ 0 ];
-		};
-
-		last( team ) {
-			return this[ team ][ this[ team ].length - 1 ];
-		};
-
-		getValue( team, lobby ) {
-
-			if ( this.size( team ) > 0 ){
-
-				let action = this.last( team );
-				this.remove( team );
-				return action;
-
-			} else {
-
-				return	{ player: {
-								team: team,
-								lobby: lobby,
-								state: "wait"
-							}
-						};
-			};
-
-		};	
-
-		size( team ) {
-			return this[ team ].length;
-		};
-
-	};
-
-	class Vector2{
-
-		constructor(){
-
-			this.vector = {
-				x: 0,
-				y: 0
-
-			};
-
-			this.matrix = {
-				x: this.vector.x,
-				y: this.vector.y,
-				z: this.vector.y,
-			};
-
-			this.matrix.D3 = {
-				x: this.matrix,
-				y: this.matrix
-			};
-
-		};
-
-		add( x, y ){
 			
-			this.vector.x = x;
-			this.vector.y = y;
-
-			return this.vector;
-
-		};
-	};
-
-	class Emitter {
-
-		constructor(){};
-
-		static init( ) {
-
-			this.m_Owner = {
-
-				x:10,
-				y:20,
-				vector: new Vector2()
-
-			};
-
-			this.m_Team = {
-
-				a: "red",
-				b: "blue"
-
-			};
-
-			this.result = this.m_Owner.vector.add( 25, 25 );
-			this.queue = new Queue( this.result );
-		
-		};
-
-		static send() {
-
-			this.queue.add ( this, "redTeam" );
-
-		};
-
-		static toJSon(){
-
-			let objJSON = this.queue.cloneObject( this );
-
-			console.log(  objJSON );
-			console.log(  this );
-			//console.log( JSON.stringify ( objJSON ) );
-
-			this.cache = null;
-
-		};
-	};
-
-	let emitter = new Emitter();
-	Emitter.init();
-	Emitter.send();
-	Emitter.toJSon();
-
-</script>
+		let emitter = new Emitter();
+	</script>
 </html>

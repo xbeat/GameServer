@@ -7,8 +7,28 @@ class Queue {
 		this.objectCache = new Object();
 	};
 
-	objectize( obj ) {
+	prepare( obj ) {
 
+				let m_pOwner = {
+
+					FieldPlayer: {
+
+						default_entity_type: -1,
+						id: 16,
+						m_ID: 8,
+						m_PlayerRole: "defender",
+						m_bTag: false,
+						m_dBoundingRadius: 10,
+						m_dDistSqToBall: 1250,
+						m_dMass: 3,
+						m_dMaxForce: 1,
+						m_dMaxSpeed: 1.6,
+						m_dMaxTurnRate: 0.4,
+						m_iDefaultRegion: 10,
+						m_iHomeRegion: 10,
+						m_iType: -1
+					};
+				};
 
     };
 
