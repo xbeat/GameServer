@@ -1,4 +1,5 @@
 const PlayerBase = require( '../modules/PlayerBase.js' );
+const Emitter = require( '../emitter.js' );
 
 /**
  * Desc:   class to implement a goalkeeper agent
@@ -19,7 +20,8 @@ class GoalKeeper extends PlayerBase {
                 max_speed,
                 max_turn_rate,
                 scale,
-                id ) {
+                id,
+                index ) {
 
         super( home_team,
                 home_region,
@@ -32,8 +34,8 @@ class GoalKeeper extends PlayerBase {
                 scale,
                 PlayerBase.player_role().goal_keeper );
 
-
         this.id = id;
+        this.index = index;
 
         this.m_vLookAt = new Vector2D();
 
@@ -98,6 +100,15 @@ class GoalKeeper extends PlayerBase {
         } else {
             //gdi.RedPen();
         };
+
+        /* **************** */
+
+        Emitter.GoalKeeper( this.Pos(),
+							this.m_vLookAt,
+							this.index,
+							this.Team().Color() );
+
+		/* **************** */
 
         //render the player's body
         this.m_vecPlayerVBTrans = Transformation.WorldTransform( this.m_vecPlayerVB,

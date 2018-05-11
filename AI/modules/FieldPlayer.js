@@ -8,6 +8,7 @@ const Transformation = require( '../modules/Transformation.js' );
 const SoccerTeam = require( '../modules/SoccerTeam.js' );
 const EntityFunctionTemplates = require( '../modules/EntityFunctionTemplates.js' );
 const Global = require( '../modules/Global.js' );
+const Emitter = require( '../emitter.js' );
 
 /**
  *   Desc:   Derived from a PlayerBase, this class encapsulates a player
@@ -31,7 +32,8 @@ class FieldPlayer extends PlayerBase {
                 max_turn_rate,
                 scale,
                 role,
-                id ) {
+                id,
+                index ) {
 
         super( home_team,
                 home_region,
@@ -46,6 +48,7 @@ class FieldPlayer extends PlayerBase {
 
     
         this.id = id;
+        this.index = index;
 
         //set up the state machine
         this.m_pStateMachine = new StateMachine( this );
@@ -140,6 +143,15 @@ class FieldPlayer extends PlayerBase {
         } else {
             //gdi.RedPen();
         };
+
+        /* **************** */
+
+        Emitter.FieldPlayer( this.Pos(),
+							this.Heading(),
+							this.index,
+							this.Team().Color() );
+
+		/* **************** */
 
         //render the player's body
         this.m_vecPlayerVBTrans = Transformation.WorldTransform( this.m_vecPlayerVB,

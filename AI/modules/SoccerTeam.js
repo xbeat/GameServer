@@ -25,6 +25,7 @@ class SoccerTeam {
                     Prm.PlayerMaxSpeedWithoutBall,
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
+                    0,
                     0 ) );
 
             //create the players
@@ -39,6 +40,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
+                    1,
                     1 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -52,6 +54,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
+                    2,
                     2 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -65,6 +68,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
+                    3,
                     3 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -78,6 +82,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
+                    4,
                     4 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -91,6 +96,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
+                    5,
                     5 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -104,6 +110,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
+                    6,
                     6 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -117,6 +124,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
+                    7,
                     7 ) );
 
             this.m_Players.push( new FieldPlayer( this,
@@ -130,6 +138,7 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
+                    8,
                     8 ) );
  
 
@@ -145,7 +154,8 @@ class SoccerTeam {
                     Prm.PlayerMaxSpeedWithoutBall,
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
-                    9 ) );
+                    9,
+                    0 ) );
 
             //create the players
             this.m_Players.push( new FieldPlayer( this,
@@ -159,7 +169,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
-                    10 ) );
+                    10,
+                    1 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     15,
@@ -172,7 +183,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
-                    11 ) );
+                    11,
+                    2 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     14,
@@ -185,7 +197,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
-                    12 ) );
+                    12,
+                    3 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     13,
@@ -198,7 +211,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
-                    13 ) );
+                    13,
+                    4 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     12,
@@ -211,7 +225,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
-                    14 ) );
+                    14,
+                    5 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     11,
@@ -224,7 +239,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
-                    15 ) );
+                    15,
+                    6 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     10,
@@ -237,7 +253,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
-                    16 ) );
+                    16,
+                    7 ) );
 
             this.m_Players.push( new FieldPlayer( this,
                     9,
@@ -250,7 +267,8 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
-                    17 ) );
+                    17,
+                    8 ) );
                                
         };
 

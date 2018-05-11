@@ -4,33 +4,7 @@ class Queue {
 		this.ws = ws;
 		this.redTeam = new Array();
 		this.blueTeam = new Array();
-		this.objectCache = new Object();
 	};
-
-	prepare( obj ) {
-
-				let m_pOwner = {
-
-					FieldPlayer: {
-
-						default_entity_type: -1,
-						id: 16,
-						m_ID: 8,
-						m_PlayerRole: "defender",
-						m_bTag: false,
-						m_dBoundingRadius: 10,
-						m_dDistSqToBall: 1250,
-						m_dMass: 3,
-						m_dMaxForce: 1,
-						m_dMaxSpeed: 1.6,
-						m_dMaxTurnRate: 0.4,
-						m_iDefaultRegion: 10,
-						m_iHomeRegion: 10,
-						m_iType: -1
-					};
-				};
-
-    };
 
 	add( action, team ) {
 		this[team].unshift( action );
@@ -80,7 +54,84 @@ class Emitter {
 
 		this.ws = ws;
 		this.queue = new Queue( ws );
+		this.emitSoccerBall = true;
+
 	};
+
+
+	static SoccerBall( position ) {
+
+		let data = {
+				e: "B",
+				P: { 
+					x: position.x,
+					y: position.y
+				}
+			};
+
+		//console.log( "Ball ", data.m_pBall.x, data.m_pBall.y );
+		//this.add( obj, "redTeam" );
+
+		if ( this.ws.readyState == this.ws.OPEN && this.emitSoccerBall == true ){
+			this.ws.send( JSON.stringify( data ) );
+			this.emitSoccerBall = false;
+		} else {
+			this.emitSoccerBall = true;
+		};
+
+	};    
+
+	static FieldPlayer( position, heading, index, color ) {
+
+		let data = {
+				e: "F",
+				P: { 
+					x: position.x,
+					y: position.y
+				},
+				H: { 
+					x: heading.x,
+					y: heading.y
+				},
+				I: index,
+				C: color.substring( 0, 1 )
+			};
+
+		//console.log( "FieldPlayer ID " + data.m_ID + " Pos ", data.m_vPosition.x, data.m_vPosition.y );
+		//this.add( obj, "redTeam" );
+
+		if ( this.ws.readyState == this.ws.OPEN ){
+			this.ws.send( JSON.stringify( data ) );
+		};
+	
+	};
+
+
+	static GoalKeeper( position, lookAt, index, color ) {
+
+		let data = {
+				e: "G",
+				P: { 
+					x: position.x,
+					y: position.y
+				},
+				L: { 
+					x: lookAt.x,
+					y: lookAt.y
+				},
+				I: index,
+				C: color.substring( 0, 1 )
+			};
+
+		//console.log( "FieldPlayer ID " + data.m_ID + " Pos ", data.m_vPosition.x, data.m_vPosition.y );
+		//this.add( obj, "redTeam" );
+
+		if ( this.ws.readyState == this.ws.OPEN ){
+			this.ws.send( JSON.stringify( data ) );
+		};
+	
+	};
+
 
 	static send( data ) {
 

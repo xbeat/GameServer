@@ -3,6 +3,7 @@ const MovingEntity = require( '../modules/MovingEntity.js' );
 const geometry = require( '../modules/geometry.js' );
 const utils = require( '../modules/utils.js' );
 const Transformation = require( '../modules/Transformation.js' );
+const Emitter = require( '../emitter.js' );
 
 /**
  *  Desc: Class to implement a soccer ball. This class inherits from
@@ -154,6 +155,12 @@ class SoccerBall extends MovingEntity {
 
         //gdi.Circle( this.m_vPosition, this.m_dBoundingRadius );
 
+        /* **************** */
+
+        Emitter.SoccerBall( this.m_vPosition );
+		
+		/* **************** */
+
         //const ballPos = scene3D.convertRange( this.m_vPosition );
         //scene3D.ball3D.position.set( ballPos.x, 5, ballPos.y );
 
@@ -184,6 +191,7 @@ class SoccerBall extends MovingEntity {
 
         //update the velocity
         this.m_vVelocity = acceleration;
+
     };
 
     /**

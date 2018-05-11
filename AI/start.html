@@ -1,6 +1,3 @@
-<script>
-	'use strict';
-</script>
 <html lang="en">
 	<head>
 
@@ -11,8 +8,29 @@
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/sidemenu.css" />
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/AI.css">
 
+		<style type="text/css">
+
+			.buttonInjectAI {
+				position: absolute;
+				left: 300px;
+				top:100px;
+				width:100px;
+				height:50px;
+			}
+
+			.virtualButton {
+				cursor: pointer;
+			}
+
+		</style>
+
 	</head>
 	<body>
+
+		<div class="virtualButton" id="buttonShoot">Shoot</div>
+	    <div class="virtualButton" id="buttonReset">Reset</div>
+	    <div class="virtualButton" id="buttonGetValue">Get Value</div>
+	    <div id="state">Data</div>
 
 		<div class="xbeat-logo-wrapper">
 			<img class="xbeat-logo-up" src="../../img/LogoXbeatLinear.svg" title="logo">
@@ -25,6 +43,10 @@
 		  <span></span>
 		</div>
 		
+		<div class="buttonInjectAI">
+			<a class="btn"><button onClick="injectAI()" class="sideMenuButton"><p class="sideMenuElement">Inject AI</p></button></a>
+		</div>
+
 		<div class="menu-container">
 
 			<nav>
@@ -162,6 +184,8 @@
 
 	<script>
 		
+		"use strict";
+
 		document.querySelector( '.nav-toggle' ).addEventListener( "click", function( e ){
 			e.currentTarget.classList.toggle( 'open' );
 			document.querySelector('.menu-container').classList.toggle('nav-open');
@@ -171,88 +195,63 @@
 		window.addEventListener( 'resize', function () {
 		}, false);
 		
+		document.getElementById( "buttonShoot" ).addEventListener( "click", function(){
+
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: obj.player.lobby,
+						team:  obj.player.team,
+						state: "shoot"
+					}
+
+				}));
+
+			};	
+
+		});
+
+		document.getElementById( "buttonReset" ).addEventListener( "click", function(){
+
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: obj.player.lobby,
+						team:  obj.player.team,
+						state: "reset"
+					}
+
+				}));
+
+			};	
+
+		});
+
+		document.getElementById( "buttonGetValue" ).addEventListener( "click", function(){
+
+			if ( socket.readyState == socket.OPEN ){
+			
+				socket.send( JSON.stringify( {		
+					player: {
+						lobby: obj.player.lobby,
+						team:  obj.player.team,
+						state: "getValue"
+					}
+
+				}));
+
+			};	
+
+		});
+
 	</script>
-	
-	<!-- --------    -------- -->
-	<!-- -------- AI -------- -->
-	<!-- --------    -------- -->
 
-	<!-- Globals -->
-	<script type="text/javascript" src="js/AI/Global.js"></script>
-	<script type="text/javascript" src="js/AI/DEFINE.js"></script>
-
-	<!-- Class extended -->
-	<script type="text/javascript" src="js/AI/BaseGameEntity.js"></script>
-	<script type="text/javascript" src="js/AI/MovingEntity.js"></script>
-	<script type="text/javascript" src="js/AI/PlayerBase.js"></script>
-
-	<!-- SimpleSoccer -->
-	<script type="text/javascript" src="js/AI/FieldPlayer.js"></script>
-	<script type="text/javascript" src="js/AI/Goal.js"></script>
-	<script type="text/javascript" src="js/AI/GoalKeeper.js"></script>
-	<script type="text/javascript" src="js/AI/ParamLoader.js"></script>
-	<script type="text/javascript" src="js/AI/SoccerBall.js"></script>
 	<script type="text/javascript" src="js/AI/SoccerPitch.js"></script>
-	<script type="text/javascript" src="js/AI/SoccerTeam.js"></script>
-	<script type="text/javascript" src="js/AI/SteeringBehaviors.js"></script>
-	<script type="text/javascript" src="js/AI/SupportSpotCalculator.js"></script>
-
-	<!-- SimpleSoccer.FieldPlayerStates -->
-	<script type="text/javascript" src="js/AI/ChaseBall.js"></script>
-	<script type="text/javascript" src="js/AI/Dribble.js"></script>
-	<script type="text/javascript" src="js/AI/GlobalPlayerState.js"></script>
-	<script type="text/javascript" src="js/AI/KickBall.js"></script>
-	<script type="text/javascript" src="js/AI/ReceiveBall.js"></script>
-	<script type="text/javascript" src="js/AI/ReturnToHomeRegion.js"></script>
-	<script type="text/javascript" src="js/AI/SupportAttacker.js"></script>
-	<script type="text/javascript" src="js/AI/Wait.js"></script>
-
-	<!-- SimpleSoccer.GoalKeeperStates -->
-	<script type="text/javascript" src="js/AI/GlobalKeeperState.js"></script>
-	<script type="text/javascript" src="js/AI/InterceptBall.js"></script>
-	<script type="text/javascript" src="js/AI/PutBallBackInPlay.js"></script>
-	<script type="text/javascript" src="js/AI/ReturnHome.js"></script>
-	<script type="text/javascript" src="js/AI/TendGoal.js"></script>
-
-	<!-- SimpleSoccer.TeamStates -->
-	<script type="text/javascript" src="js/AI/Attacking.js"></script>
-	<script type="text/javascript" src="js/AI/Defending.js"></script>
-	<script type="text/javascript" src="js/AI/PrepareForKickOff.js"></script>
-	<script type="text/javascript" src="js/AI/TeamStates.js"></script>
-
-	<!-- Common.D2 -->
 	<script type="text/javascript" src="js/AI/C2DMatrix.js"></script>
-	<!-- <script type="text/javascript" src="js/AI/InvertedAABBox2D.js"></script> -->
-	<script type="text/javascript" src="js/AI/Transformation.js"></script>
-	<script type="text/javascript" src="js/AI/Vector2D.js"></script>
-	<script type="text/javascript" src="js/AI/Wall2D.js"></script>
-	<script type="text/javascript" src="js/AI/Geometry.js"></script>
-
-	<!-- Common.FSM -->
-	<script type="text/javascript" src="js/AI/StateMachine.js"></script>
-
-	<!-- Common.Game -->
-	<script type="text/javascript" src="js/AI/EntityFunctionTemplates.js"></script>
-	<script type="text/javascript" src="js/AI/EntityManager.js"></script>
-	<script type="text/javascript" src="js/AI/Region.js"></script>
-
-	<!-- Common.Messaging -->
-	<script type="text/javascript" src="js/AI/TreeSet.js"></script>
-	<script type="text/javascript" src="js/AI/MessageDispatcher.js"></script>
-	<script type="text/javascript" src="js/AI/Telegram.js"></script>
-
-	<!-- Common.Time -->
-	<!-- <script type="text/javascript" src="js/AI/CrudeTimer.js"></script> -->
 	<script type="text/javascript" src="js/AI/PrecisionTimer.js"></script>
-	<script type="text/javascript" src="js/AI/Regulator.js"></script>
-
-	<!-- Common.Misc -->
 	<script type="text/javascript" src="js/AI/Cgdi.js"></script>
-	<script type="text/javascript" src="js/AI/CppToJava.js"></script>
-	<script type="text/javascript" src="js/AI/FrameCounter.js"></script>
-	<script type="text/javascript" src="js/AI/utils.js"></script>
-
-	<!-- Start APP -->
-	<script type="text/javascript" src="js/start.js"></script>
+	<script type="text/javascript" src="js/gameClient.js"></script>
 
 </html>

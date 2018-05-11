@@ -8,204 +8,35 @@
 
 class SoccerPitch {
 
-    /**
-     ** this instantiates the regions the players utilize to  position
-     ** themselves
-     */
-    CreateRegions( width, height ) {
-        //index into the vector
-        let idx = this.m_Regions.length - 1;
-
-        for ( let col = 0; col < this.NumRegionsHorizontal; ++col ) {
-            for ( let row = 0; row < this.NumRegionsVertical; ++row ) {
-                this.m_Regions[ idx ] = new Region( this.PlayingArea().Left() + col * width,
-                        this.PlayingArea().Top() + row * height,
-                        this.PlayingArea().Left() + ( col + 1 ) * width,
-                        this.PlayingArea().Top() + ( row + 1 ) * height,
-                        idx );
-                --idx;
-            };
-        };
-    };
-
     //------------------------------- ctor -----------------------------------
     //------------------------------------------------------------------------
     constructor( cx, cy ) {
-        this.NumRegionsHorizontal = 6;
-        this.NumRegionsVertical = 3;
-        this.m_cxClient = cx;
-        this.m_cyClient = cy;
-        this.m_bPaused = false;
-        this.m_bGoalKeeperHasBall = false;
-        this.m_Regions = new Array( this.NumRegionsHorizontal * this.NumRegionsVertical );
-        this.m_bGameOn = true;
-        //define the playing area
-        this.m_pPlayingArea = new Region( 20, 20, cx - 20, cy - 10 );
-        this.m_vecWalls = new Array();
 
-        //create the regions  
-        this.CreateRegions( this.PlayingArea().Width() / this.NumRegionsHorizontal,
-                this.PlayingArea().Height() / this.NumRegionsVertical );
-
-        //create the goals
-        this.m_pRedGoal = new Goal( new Vector2D( this.m_pPlayingArea.Left(), ( cy - Prm.GoalWidth ) / 2 ),
-                new Vector2D( this.m_pPlayingArea.Left(), cy - ( cy - Prm.GoalWidth ) / 2 ),
-                new Vector2D( 1, 0 ) );
-
-        this.m_pBlueGoal = new Goal( new Vector2D( this.m_pPlayingArea.Right(), ( cy - Prm.GoalWidth ) / 2 ),
-                new Vector2D( this.m_pPlayingArea.Right(), cy - ( cy - Prm.GoalWidth ) / 2),
-                new Vector2D( -1, 0 ) );
+		let BallSize = 5.0;
 
         //create the soccer ball
-        this.m_pBall = new SoccerBall( new Vector2D( this.m_cxClient / 2.0, this.m_cyClient / 2.0 ),
-                Prm.BallSize,
-                Prm.BallMass,
-                this.m_vecWalls );
+        this.m_pBall = new SoccerBall( BallSize );
 
         //create the teams 
-        this.m_pRedTeam = new SoccerTeam( this.m_pRedGoal, this.m_pBlueGoal, this, SoccerTeam.red() );
-        this.m_pBlueTeam = new SoccerTeam( this.m_pBlueGoal, this.m_pRedGoal, this, SoccerTeam.blue() );
-
-        //make sure each team knows who their opponents are
-        this.m_pRedTeam.SetOpponents( this.m_pBlueTeam );
-        this.m_pBlueTeam.SetOpponents( this.m_pRedTeam );
-
-        //create the walls
-        let TopLeft = new Vector2D( this.m_pPlayingArea.Left(), this.m_pPlayingArea.Top() );
-        let TopRight = new Vector2D( this.m_pPlayingArea.Right(), this.m_pPlayingArea.Top() );
-        let BottomRight = new Vector2D( this.m_pPlayingArea.Right(), this.m_pPlayingArea.Bottom() );
-        let BottomLeft = new Vector2D( this.m_pPlayingArea.Left(), this.m_pPlayingArea.Bottom() );
-
-        this.m_vecWalls.push( new Wall2D( BottomLeft, this.m_pRedGoal.RightPost() ) );
-        this.m_vecWalls.push( new Wall2D( this.m_pRedGoal.LeftPost(), TopLeft ) );
-        this.m_vecWalls.push( new Wall2D( TopLeft, TopRight ) );
-        this.m_vecWalls.push( new Wall2D( TopRight, this.m_pBlueGoal.LeftPost() ) );
-        this.m_vecWalls.push( new Wall2D( this.m_pBlueGoal.RightPost(), BottomRight ) );
-        this.m_vecWalls.push( new Wall2D( BottomRight, BottomLeft ) );
-
-        let p = new ParamLoader();
-        let tick = 0;
+        this.m_pRedTeam = new SoccerTeam( "red" );
+        this.m_pBlueTeam = new SoccerTeam( "blue" );
 
         this.pitch();
 
     };
 
-    //-------------------------------- dtor ----------------------------------
-    //------------------------------------------------------------------------
-    finalize() {
-        super.finalize();
-        this.m_pBall = null;
-
-        this.m_pRedTeam = null;
-        this.m_pBlueTeam = null;
-
-        this.m_pRedGoal = null;
-        this.m_pBlueGoal = null;
-
-        this.m_pPlayingArea = null;
-
-        for ( let i = 0; i < this.m_Regions.size(); ++i ) {
-            this.m_Regions[i] = null;
-        };
-    };
-
-    /**
-     *  fixed frame rate (60 by default) so we don't need
-     *  to pass a time_elapsed as a parameter to the game entities
-     */
-    Update() {
-        if ( this.m_bPaused ) {
-            return;
-        };
-
-        //update the balls
-        this.m_pBall.Update();
-
-        //update the teams
-        this.m_pRedTeam.Update();
-        this.m_pBlueTeam.Update();
-
-        //if a goal has been detected reset the pitch ready for kickoff
-        if ( this.m_pBlueGoal.Scored( this.m_pBall ) || this.m_pRedGoal.Scored( this.m_pBall ) || this.gameReset == true ) {
-            this.m_bGameOn = false;
-
-            if ( this.gameReset == true ){
-				this.gameReset = false;
-	            this.m_pBlueGoal.m_iNumGoalsScored = 0;
-    	        this.m_pRedGoal.m_iNumGoalsScored = 0;            
-            };
-
-            //update score
-            // the score is inversed because the team that make the score 
-            // has not access to the other team object ( Goal.js:25 )
-            //document.getElementById("scoreTeamA").innerText = this.m_pBlueGoal.m_iNumGoalsScored;
-            //document.getElementById("scoreTeamB").innerText = this.m_pRedGoal.m_iNumGoalsScored;            
-
-            //reset the ball                                                      
-            this.m_pBall.PlaceAtPosition( new Vector2D( this.m_cxClient / 2.0, this.m_cyClient / 2.0 ) );
-
-            //get the teams ready for kickoff
-            this.m_pRedTeam.GetFSM().ChangeState( PrepareForKickOff.Instance() );
-            this.m_pBlueTeam.GetFSM().ChangeState( PrepareForKickOff.Instance() );
-        };
-    };
-
     //------------------------------ Render ----------------------------------
     //------------------------------------------------------------------------
     Render() {
-        //draw the grass
-        //gdi.DarkGreenPen();
-        //gdi.DarkGreenBrush();
-        //gdi.Rect(0, 0, this.m_cxClient, this.m_cyClient );
+
         gdi.clearRect( 0, 0, canvas.width, canvas.height );
 
-        //render regions
-        if ( Prm.bRegions ) {
-            for ( let r = 0; r < this.m_Regions.length; ++r ) {
-                this.m_Regions[ r ].Render( true );
-            };
-        };
-
-        //render the goals
-        //gdi.HollowBrush();
-        //gdi.RedPen();
-        //gdi.Rect( this.m_pPlayingArea.Left(), ( this.m_cyClient - Prm.GoalWidth ) / 2, this.m_pPlayingArea.Left() + 40,
-        //        this.m_cyClient - ( this.m_cyClient - Prm.GoalWidth ) / 2 );
-
-        //gdi.BluePen();
-        //gdi.Rect( this.m_pPlayingArea.Right(), ( this.m_cyClient - Prm.GoalWidth ) / 2, this.m_pPlayingArea.Right() - 40,
-        //        this.m_cyClient - ( this.m_cyClient - Prm.GoalWidth ) / 2 );
-
-        //render the pitch markings
-        //gdi.WhitePen();
-        //gdi.Circle( this.m_pPlayingArea.Center(), this.m_pPlayingArea.Width() * 0.125 );
-        //gdi.Line( this.m_pPlayingArea.Center().x, this.m_pPlayingArea.Top(), this.m_pPlayingArea.Center().x, this.m_pPlayingArea.Bottom() );
-        //gdi.WhiteBrush();
-        //gdi.Circle( this.m_pPlayingArea.Center(), 2.0 );
-
         //the ball
-        gdi.WhitePen();
-        gdi.WhiteBrush();
         this.m_pBall.Render();
 
         //Render the teams
         this.m_pRedTeam.Render();
         this.m_pBlueTeam.Render();
-
-        //render the walls
-        //gdi.WhitePen();
-        //for ( let w = 0; w < this.m_vecWalls.length; ++w ) {
-        //    this.m_vecWalls[ w ].Render();
-        //};
-
-        //show the score
-        //gdi.TextColor( 255, 0, 0 ); // red
-        //gdi.TextAtPos( ( this.m_cxClient / 2 ) - 50, this.m_cyClient - 8,
-        //        "Red: " + ttos( this.m_pBlueGoal.NumGoalsScored() ) );
-
-        //gdi.TextColor( 0, 0, 255 ); // blue
-        //gdi.TextAtPos( ( this.m_cxClient / 2 ) + 10, this.m_cyClient - 8, 
-        //        "Blue: " + ttos( this.m_pRedGoal.NumGoalsScored() ) );
 
         return true;
     };
@@ -291,8 +122,8 @@ class SoccerPitch {
         contextPitch.stroke();
 
         //Golie
-        contextPitch.rect( 12 * ratio, 97 * ratio + offsetY, 8 * ratio, 24 * ratio + offsetY ); //left
-        contextPitch.rect( 380 * ratio, 97 * ratio + offsetY, 8 * ratio, 24 * ratio + offsetY ); //right
+        contextPitch.rect( 12 * ratio, 92 * ratio + offsetY, 8 * ratio, 24 * ratio + offsetY ); //left
+        contextPitch.rect( 380 * ratio, 92 * ratio + offsetY, 8 * ratio, 24 * ratio + offsetY ); //right
         contextPitch.stroke();
 
         //external line
@@ -312,57 +143,407 @@ class SoccerPitch {
         contextPitch.lineTo( 388 * ratio, 201 * ratio + offsetY );//bottom right
         contextPitch.stroke();
     };
+  
+};
 
-    TogglePause() {
-        this.m_bPaused = !this.m_bPaused;
+class Vector2D {
+
+    constructor( a = 0.0, b = 0.0 ) {
+
+        if ( typeof a  === 'object' ){
+            this.x = a.x;
+            this.y = a.y;
+        } else {
+            this.x = a;
+            this.y = b;
+        };    
     };
 
-    Paused() {
-        return this.m_bPaused;
+    set( v ) {
+        this.x = v.x;
+        this.y = v.y;
+        return this;
+    };
+    
+    /**
+     * returns the vector that is perpendicular to this one.
+     */
+    Perp() {
+        return new Vector2D( -this.y, this.x );
     };
 
-    cxClient() {
-        return this.m_cxClient;
+};
+
+/**
+ *  Desc:   class to define a team of soccer playing agents. A SoccerTeam
+ *          contains several field players and one goalkeeper. A SoccerTeam
+ *          is implemented as a finite state machine and has states for
+ *          attacking, defending, and KickOff.
+ * 
+ */
+
+class SoccerTeam {
+
+    //----------------------------- ctor -------------------------------------
+    //
+    //------------------------------------------------------------------------
+    constructor( color ) {
+
+        this.m_Players = new Array();
+        this.m_Color = color;
+        
+        if ( color == "blue" ) {
+            //goalkeeper
+            this.m_Players.push( new GoalKeeper( this ) );
+
+            //create the players
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+
+        } else {
+            //goalkeeper
+			this.m_Players.push( new GoalKeeper( this ) );
+
+            //create the players
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+            this.m_Players.push( new FieldPlayer( this ) );
+                               
+        };
+
     };
 
-    cyClient() {
-        return this.m_cyClient;
+    /**
+     *  renders the players and any team related info
+     */
+    Render() {
+
+        for( let it = 0, size = this.m_Players.length; it < size; it++ ){
+           this.m_Players[it].Render();
+        };
+
     };
 
-    GoalKeeperHasBall() {
-        return this.m_bGoalKeeperHasBall;
+    Color() {
+        return this.m_Color;
     };
 
-    SetGoalKeeperHasBall( b ) {
-        this.m_bGoalKeeperHasBall = b;
+};
+
+/**
+ *  Desc: Definition of a soccer player base class. <del>The player inherits
+ *        from the autolist class so that any player created will be 
+ *        automatically added to a list that is easily accesible by any
+ *        other game objects.</del> (mainly used by the steering behaviors and
+ *        player state classes)
+ * 
+ */
+
+class PlayerBase {
+
+    //----------------------------- ctor -------------------------------------
+    //------------------------------------------------------------------------
+    constructor( home_team ) {
+    
+        //the vertex buffer
+        this.m_vecPlayerVB = new Array();
+        this.m_pTeam = home_team;
+
+        this.m_vHeading = new Vector2D();
+        this.m_vVelocity = new Vector2D();
+        this.m_vSide = this.m_vHeading.Perp();
+        
+        this.m_vPosition = new Vector2D();
+        this.m_dBoundingRadius = 5.00; 
+        this.m_vScale = new Vector2D( { x: 1, y: 1 } );
+
+
+        //setup the vertex buffers and calculate the bounding radius
+        this.m_vecPlayerVB.push(
+            new Vector2D( -3, 8 ),
+            new Vector2D( 3, 10 ),
+            new Vector2D( 3, -10 ),
+            new Vector2D( -3, -8 )
+        );
+
     };
 
-    PlayingArea() {
-        return this.m_pPlayingArea;
+    Team() {
+        return this.m_pTeam;
     };
 
-    Walls() {
-        return this.m_vecWalls;
+    Side() {
+        return this.m_vSide;
     };
 
-    Ball() {
-        return this.m_pBall;
+    Heading() {
+        return this.m_vHeading;
     };
 
-    GetRegionFromIndex( idx ) {
-        //assert ( ( idx >= 0 ) && ( idx < this.m_Regions.size() ) );
-        return this.m_Regions[ idx ];
+    Pos() {
+        return new Vector2D( this.m_vPosition );
     };
 
-    GameOn() {
-        return this.m_bGameOn;
+};
+
+/**
+ *  Desc: Class to implement a soccer ball. This class inherits from
+ *        MovingEntity and provides further functionality for collision
+ *        testing and position prediction.
+ * 
+ */
+
+class SoccerBall extends PlayerBase {
+
+    constructor() {
+
+        //set up the base class
+        super();
     };
 
-    SetGameOn() {
-        this.m_bGameOn = true;
+    /**
+     * Renders the ball
+     */
+    Render() {
+
+        gdi.WhitePen();
+        gdi.BlackBrush();
+		gdi.Circle( this.m_vPosition, this.m_dBoundingRadius );
+
+        //const ballPos = scene3D.convertRange( this.m_vPosition );
+        //scene3D.ball3D.position.set( ballPos.x, 5, ballPos.y );
+    
     };
 
-    SetGameOff() {
-        this.m_bGameOn = false;
+};
+
+
+/**
+ *   Desc:   Derived from a PlayerBase, this class encapsulates a player
+ *           capable of moving around a soccer pitch, kicking, dribbling,
+ *           shooting etc
+ * 
+ */
+
+class FieldPlayer extends PlayerBase {
+
+    //----------------------------- ctor -------------------------------------
+    //------------------------------------------------------------------------
+    constructor( home_team ) {
+
+        super( home_team );    
+
     };
+
+    //--------------------------- Render -------------------------------------
+    //
+    //------------------------------------------------------------------------
+
+    Render() {
+        //gdi.TransparentText();
+        //gdi.TextColor(Cgdi.grey);
+
+        //set appropriate team color
+        if ( this.Team().Color() == "blue" ) {
+            gdi.BluePen();
+        } else {
+            gdi.RedPen();
+        };
+
+        //render the player's body
+        this.m_vecPlayerVBTrans = Transformation.WorldTransform( this.m_vecPlayerVB,
+                this.Pos(),
+                this.Heading(),
+                this.Side() );
+
+        gdi.ClosedShape( this.m_vecPlayerVBTrans );
+
+        //and his head
+        gdi.BrownBrush();
+        gdi.Circle( this.Pos(), 6 );
+
+        //Update Player Position
+        //const playerPos = scene3D.convertRange( this.m_vPosition );
+        // Set new Player position
+        //scene3D.players[ this.id ].position.set( playerPos.x, 0, playerPos.y );
+
+        //Ring glow & heatmap ( player selected )
+        //if ( this.id == scene3D.playerSelected ){
+        //    scene3D.ring.position.set( playerPos.x, 0, playerPos.y );
+
+        	//heatMap.addData( [this.m_vPosition.x, this.m_vPosition.y, 1] );
+        	//heatMap.draw();
+
+        //};
+
+        // Get two point from body to get angle of rotation
+        let angleRotation = Math.atan2( this.m_vecPlayerVBTrans[2].y - this.m_vecPlayerVBTrans[1].y, 
+                                        this.m_vecPlayerVBTrans[2].x - this.m_vecPlayerVBTrans[1].x );
+        //Player Rotation
+        //if ( this.Team().Color() == SoccerTeam.blue() ) {
+        //    scene3D.players[ this.id ].rotation.y = angleRotation * -1;
+        //} else {
+        //    scene3D.players[ this.id ].rotation.y = angleRotation * -1;
+        //};
+
+        //find speed
+		let speed = Math.sqrt( this.m_vVelocity.y * this.m_vVelocity.y  + this.m_vVelocity.x * this.m_vVelocity.x );
+
+		//convert rvelocity range
+		let speedMinFrom = 0;
+		let speedMaxFrom = this.m_dMaxSpeed;
+
+		let speedMinTo = 0 
+		let speedMaxTO = 1;
+
+		if ( speed != 0 ) {
+			speed = Math.abs( ( speed - speedMinFrom ) * ( speedMaxTO - speedMinTo ) / ( speedMinFrom - speedMaxFrom ) + speedMinTo );
+		};
+
+		/*
+		// animate player
+		if( speed == 0 ) {  //idle
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 1 );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( 0 );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( 0 );
+		};
+
+		if( speed == 1 ) {  //run
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 0 );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( 0 );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( 1 );
+		};
+
+		if( speed > 0 && speed <= 0.5 ) { // from idle to walk < - > from walk to idle
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 1 - ( speed / 0.5 ) );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( speed / 0.5  );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( 0 );
+		};
+
+		if( speed > 0.5 && speed < 1 ) { // from walk to run < - > from run to walk
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 0 );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( 1 - ( ( speed - 0.5 ) / 0.5 ) );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( ( speed - 0.5 ) / 0.5 );
+		};
+		*/
+
+    };
+
+};
+
+/**
+ * Desc:   class to implement a goalkeeper agent
+ * 
+ */
+
+class GoalKeeper extends PlayerBase {
+
+    //----------------------------- ctor ------------------------------------
+    //-----------------------------------------------------------------------
+    constructor( home_team ) {
+
+        super( home_team );
+        this.m_vLookAt = new Vector2D();
+    };
+
+    //--------------------------- Render -------------------------------------
+    //
+    //------------------------------------------------------------------------
+    Render() {
+
+        if ( this.Team().Color() == "blue" ) {
+            gdi.BluePen();
+        } else {
+            gdi.RedPen();
+        };
+
+        //render the player's body
+        this.m_vecPlayerVBTrans = Transformation.WorldTransform( this.m_vecPlayerVB,
+                this.Pos(),
+                this.m_vLookAt,
+                this.m_vLookAt.Perp() );
+
+        gdi.ClosedShape( this.m_vecPlayerVBTrans );
+
+        //anf his head
+        gdi.BrownBrush();
+        gdi.Circle( this.Pos(), 6 );
+        
+        //const playerPos = scene3D.convertRange( this.Pos() );
+        //scene3D.players[ this.id ].position.set( playerPos.x, 0, playerPos.y );
+
+        //Ring glow & heatmap ( player selected )
+        //if ( this.id == scene3D.playerSelected ){
+        //    scene3D.ring.position.set( playerPos.x, 0, playerPos.y );
+
+        	//heatMap.addData( [this.m_vPosition.x, this.m_vPosition.y, 1] );
+        	//heatMap.draw();
+
+        //};
+
+        // Get two point from body to get angle of rotation
+        let angleRotation = Math.atan2( this.m_vecPlayerVBTrans[2].y - this.m_vecPlayerVBTrans[1].y, 
+                                        this.m_vecPlayerVBTrans[2].x - this.m_vecPlayerVBTrans[1].x );
+
+        //Player Rotation
+        //if ( this.Team().Color() == SoccerTeam.blue() ) {
+        //    scene3D.players[ this.id ].rotation.y = angleRotation * -1;
+        //} else {
+        //    scene3D.players[ this.id ].rotation.y = angleRotation * -1;
+        //};
+
+       	//find speed
+		let speed = Math.sqrt( this.m_vVelocity.y * this.m_vVelocity.y  + this.m_vVelocity.x * this.m_vVelocity.x );
+
+		//convert rvelocity range
+		let speedMinFrom = 0;
+		let speedMaxFrom = this.m_dMaxSpeed;
+
+		let speedMinTo = 0 
+		let speedMaxTO = 1;
+
+		if ( speed != 0 ) {
+			speed = Math.abs( ( speed - speedMinFrom ) * ( speedMaxTO - speedMinTo ) / ( speedMinFrom - speedMaxFrom ) + speedMinTo );
+		};
+
+		/*
+		// animate player
+		if( speed == 0 ) {  //idle
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 1 );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( 0 );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( 0 );
+		};
+
+		if( speed == 1 ) {  //run
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 0 );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( 0 );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( 1 );
+		};
+
+		if( speed > 0 && speed <= 0.5 ) { // from idle to walk < - > from walk to idle
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 1 - ( speed / 0.5 ) );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( speed / 0.5  );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( 0 );
+		};
+
+		if( speed > 0.5 && speed < 1 ) { // from walk to run < - > from run to walk
+			scene3D.mixer[ this.id ].clipAction( 'idle' ).setEffectiveWeight( 0 );    				
+			scene3D.mixer[ this.id ].clipAction( 'walk' ).setEffectiveWeight( 1 - ( ( speed - 0.5 ) / 0.5 ) );
+			scene3D.mixer[ this.id ].clipAction( 'run' ).setEffectiveWeight( ( speed - 0.5 ) / 0.5 );
+		};        
+		*/
+
+    };
+
 };

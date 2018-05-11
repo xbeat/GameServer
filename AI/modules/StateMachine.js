@@ -1,5 +1,3 @@
-const Emitter = require( '../emitter.js' );
-
 /**
  * State machine class. Inherit from this class and create some 
  * states to give your agents FSM functionality
@@ -75,12 +73,6 @@ class StateMachine {
 
         //change state to the new state
         this.m_pCurrentState = pNewState;
-
-        /* *************** */
-
-		Emitter.queue.prepare( this );
-        
-        /* **************** */
 
         //call the entry method of the new state
         this.m_pCurrentState.Enter( this.m_pOwner );

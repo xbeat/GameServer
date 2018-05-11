@@ -1,4 +1,65 @@
 /**
+ *  Desc:   Functions for converting 2D vectors between World and Local
+ *          space.
+ *
+ */
+
+class Transformation {
+    //--------------------------- WorldTransform -----------------------------
+    //
+    //  given a std::vector of 2D vectors, a position, orientation and scale,
+    //  this function transforms the 2D vectors into the object's world space
+    //------------------------------------------------------------------------
+    static WorldTransform( points,
+            pos,
+            forward,
+            side ) {
+        //copy the original vertices into the buffer about to be transformed
+        let TranVector2Ds = Transformation.clone( points );
+
+        //create a transformation matrix
+        let matTransform = new C2DMatrix();
+
+        //rotate
+        matTransform.Rotate( forward, side );
+
+        //and translate
+        matTransform.Translate( pos.x, pos.y );
+
+        //now transform the object's vertices
+        matTransform.TransformVector2Ds( TranVector2Ds );
+
+        return TranVector2Ds;
+    };
+
+	static clone( o ) {
+
+		function deepClone( obj ) {
+
+			if ( Array.isArray( obj ) ) {
+				let out = [], i = 0, len = obj.length;
+				for ( ; i < len; i++ ) {
+					out[ i ] = deepClone( obj[ i ] );
+				};
+				return out;
+			};
+
+			if ( typeof obj === 'object' ) {
+				let out = {}, i;
+				for ( i in obj ) {
+					out[ i ] = deepClone( obj[ i ] );
+				};
+				return out;
+			};
+			return obj;
+		};
+
+		return deepClone( o );
+	};
+
+};
+
+/**
  * Desc:   2D Matrix class 
  * 
  * 

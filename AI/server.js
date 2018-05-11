@@ -14,7 +14,7 @@ app.use( express.static( __dirname + '/' ) );
 
 app.get( '/', function( req, res ){
 
-	res.sendFile( __dirname + "/index.html" );
+	res.sendFile( __dirname + "/start.html" );
 	
 	// Cookies that have not been signed
 	//console.log( 'Cookies: ', req.cookies );
@@ -54,8 +54,8 @@ class Server {
 		this.lobby = uuidv4();
 		this.team = "redTeam";
 
-		this.gameServer = new GameServer();
 		this.emitter.init( ws );
+		this.gameServer = new GameServer();
 
 		this.emitter.send( {		
 					player: {

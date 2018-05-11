@@ -82,14 +82,6 @@ class PrecisionTimer {
         return this.m_bStarted;
     };
 
-    SmoothUpdatesOn() {
-        this.m_bSmoothUpdates = true;
-    };
-
-    SmoothUpdatesOff() {
-        this.m_bSmoothUpdates = false;
-    };
-
     /**
      *  returns true if it is time to move on to the next frame step. To be used if
      *  FPS is set.
@@ -114,29 +106,4 @@ class PrecisionTimer {
         return false;
     };
 
-    /**
-     *  returns time elapsed since last call to this function.
-     */
-    TimeElapsed() {
-        this.m_LastTimeElapsed = this.m_TimeElapsed;
-
-        //QueryPerformanceCounter((LARGE_INTEGER *) & m_CurrentTime);
-        this.m_CurrentTime = new Date().getTime();
-
-        this.m_TimeElapsed = ( this.m_CurrentTime - this.m_LastTimeInTimeElapsed ) * this.m_TimeScale;
-
-        this.m_LastTimeInTimeElapsed = this.m_CurrentTime;
-
-        let Smoothness = 5.0;
-
-        if ( this.m_bSmoothUpdates ) {
-            if ( this.m_TimeElapsed < ( this.m_LastTimeElapsed * Smoothness ) ) {
-                return this.m_TimeElapsed;
-            } else {
-                return 0.0;
-            }
-        } else {
-            return this.m_TimeElapsed;
-        };
-    };
 };
