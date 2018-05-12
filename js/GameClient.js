@@ -1,4 +1,3 @@
-
 'use strict';
 
 // ------------ Globals ------------
@@ -8,11 +7,6 @@ let EXECUTERAF = true;
 
 let cxClient = 460;//600
 let cyClient = 290;//380
-
-let Color = {
-	WHITE: "255, 255, 255",
-	BLACK: "0, 0, 0"
-};
 
 let canvas = document.createElement( "canvas" );
 document.body.appendChild( canvas );
