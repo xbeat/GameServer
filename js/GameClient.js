@@ -147,6 +147,7 @@ socket.onerror = function ( error ) {
 };
 
 // ------------ queue class ---------
+/*
 class Queue {
 
 	constructor() {
@@ -230,3 +231,4 @@ const objectifyClass = {
 	//Wait
 
 };
+*/
