@@ -1,0 +1,17 @@
+<script>
+
+	class Test{
+		static Instance(){
+			console.log( "Instantiated" );
+		};
+	};
+
+	var testVar = "Test";
+
+	const self = {
+		Test
+	};
+
+	self[testVar].Instance();
+
+</script>

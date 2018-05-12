@@ -1,212 +1,232 @@
-class GameClient extends VirtualJoystick {
+
+'use strict';
+
+// ------------ Globals ------------
+let RAF;
+
+let EXECUTERAF = true;
+
+let cxClient = 460;//600
+let cyClient = 290;//380
+
+let Color = {
+	WHITE: "255, 255, 255",
+	BLACK: "0, 0, 0"
+};
+
+let canvas = document.createElement( "canvas" );
+document.body.appendChild( canvas );
+
+canvas.id = "canvasPitchAI";
+canvas.style.position = "fixed";
+canvas.style.bottom = "10px";
+canvas.style.left = "50%";
+canvas.style.margin = "0 auto";
+canvas.style.zIndex = "30";
+canvas.style.transform = "translate( -50%, 0 )";
+
+canvas.width = cxClient;
+canvas.height = cyClient;
+let context = canvas.getContext( '2d' );
+context.clearRect( 0, 0, canvas.width, canvas.height ); 
+gdi.StartDrawing( context );
+
+let g_SoccerPitch = null;
+var ball = null;
+var red = null;
+var blue = null;
+let scene3D = new Scene3D();
+
+// resize Scene 3D
+window.addEventListener( 'resize', function () {
+	scene3D.camera.aspect = window.innerWidth / window.innerHeight;
+	scene3D.camera.updateProjectionMatrix();
+	scene3D.renderer.setSize( window.innerWidth, window.innerHeight );
+}, false);
+
+//--------------- update ---------------
+let timer = new PrecisionTimer();
+//start the timer
+timer.Start();
+
+//----------- Entry Point -----------
+function step() {
+
+	RAF = requestAnimationFrame( step );
+
+	//update
+	if ( timer.ReadyForNextFrame() ) {
+
+		if ( EXECUTERAF === true ){
+
+			g_SoccerPitch.Render();
+
+		};
+
+	};
+
+};
+
+// start websocket
+let HOST = location.origin.replace( /^http/, 'ws' );
+let socket = new WebSocket( HOST + '/?serverState=state', 'echo-protocol' );
+
+// listening for server response
+socket.onmessage = function ( message ) { 
+
+	if ( ball == null || red == null || blue == null ) return; // wait for 3D instantiated
+
+	let obj = JSON.parse( message.data );
+
+	if( typeof( obj.player ) !== "undefined" ) {
+
+		switch( obj.player.state ) {
+			
+			case "connected":
+				document.getElementById( "state" ).innerText = "Connected";
+				gameclient.update( { state: "Connected" } );
+				break;
+
+			case "shoot":
+			case "reset":
+			case "receive":
+			case "wait":
+				document.getElementById( "state" ).innerText = obj.player.data.player.state;
+				gameclient.update( obj );
+				break;
+
+		};
+
+	};
+
+	if( typeof ( obj.e ) !== "undefined" ) {
+
+		let color = obj.C == "r" ? "red" : "blue";
+		
+		switch( obj.e ) {
+
+			case "B"://Ball
+				//document.getElementById( "state" ).innerText = obj.e;
+				ball.m_vPosition.set( obj.P );
+				break;
+
+			case "F"://FieldPlayer
+				//document.getElementById( "state" ).innerText = obj.e;
+				window[ color ].m_Players[ obj.I ].m_vPosition.set( obj.P );
+
+				window[ color ].m_Players[ obj.I ].m_vVelocity.x = Math.abs( window[ color ].m_Players[ obj.I ].m_vPosition.x - window[ color ].m_Players[ obj.I ].m_lastPosition.x ); 
+				window[ color ].m_Players[ obj.I ].m_vVelocity.y = Math.abs( window[ color ].m_Players[ obj.I ].m_vPosition.y - window[ color ].m_Players[ obj.I ].m_lastPosition.y );
+				window[ color ].m_Players[ obj.I ].m_lastPosition.set( obj.P );
+				
+				window[ color ].m_Players[ obj.I ].m_vHeading.set( obj.H );
+				window[ color ].m_Players[ obj.I ].m_vSide = window[ color ].m_Players[ obj.I ].m_vHeading.Perp();
+				break;
+
+			case "G"://GoalKeeper
+				//document.getElementById( "state" ).innerText = obj.e;
+				window[ color ].m_Players[ obj.I ].m_vPosition.set( obj.P );
+
+				window[ color ].m_Players[ obj.I ].m_vVelocity.x = Math.abs( window[ color ].m_Players[ obj.I ].m_vPosition.x - window[ color ].m_Players[ obj.I ].m_lastPosition.x ); 
+				window[ color ].m_Players[ obj.I ].m_vVelocity.y = Math.abs( window[ color ].m_Players[ obj.I ].m_vPosition.y - window[ color ].m_Players[ obj.I ].m_lastPosition.y );
+				window[ color ].m_Players[ obj.I ].m_lastPosition.set( obj.P );
+
+				window[ color ].m_Players[ obj.I ].m_vLookAt.set( obj.L );
+				break;
+		
+		};
+
+	};
+
+};
+
+// listening for any socket error
+socket.onerror = function ( error ) { 
+
+	console.log( 'WebSocket error: ' + error );
+
+};
+
+// ------------ queue class ---------
+class Queue {
+
+	constructor() {
+		this.redTeam = new Array();
+		this.blueTeam = new Array();
+	};
+
+	add( action, team ) {
+		this[team].unshift( action );
+	};
+
+	remove( team ) {
+		this[team].pop();
+	};
+
+	first( team ) {
+		return this[team][ 0 ];
+	};
+
+	last( team ) {
+		return this[team][ this[team].length - 1 ];
+	};
+
+	getValue( team, lobby ) {
+
+		if ( this.size( team ) > 0 ){
+			let action = this.last( team );
+			this.remove( team );
+			return action;
+		} else {
+			return	{ player: {
+							team: team,
+							lobby: lobby,
+							state: "wait"
+						}
+					};
+		};
+
+	};	
+
+	size( team ) {
+		return this[team].length;
+	};
+
+};
+
+
+class gameClient {
 
 	constructor() {
 
-		super( { container: document.getElementById( "joystickStatic" ),
-					maxTravel: 32,
-					style: "virtualJoystic-stick"
-				});
-
-		this.canvas = document.getElementById( 'canvas' );
-		this.context = this.canvas.getContext( '2d' );
-
-		this.w = 1000;
-		this.h = 600;
-		this.canvas.width = this.w;
-		this.canvas.height = this.h;
-		this.canvas.style.zIndex = "10";
-
-		this.playerNum = 22;
-		this.players = new Array();
-
-		let options = {
-			mass: 1,
-			maxSpeed: 5,
-			maxForce: 1,
-			edgeBehavior: 'bounce',
-			maxDistance: 400,
-			minDistance: 20,
-			radius: 8
-		};
+		this.queue = new Queue();
 
 	};
 
-	loop() {
+	update( data ) {
 
-		RAF = requestAnimationFrame( this.loop.bind( this ) );
-
-		let now = Date.now();
-		let delta = ( now - this.previousTick ) / 30; // adjust here to have a good looking speed
-		this.previousTick = now;
-
-		this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
-
-		for( let t = 0; t < this.players.length; t++ ) {
-
-			let player = this.players[t];
-			player.state.update( delta );
-			let playerColor = player.color;
-
-			if ( player.state.getCurrentState() == "controlled" ) {
-				this.moveControlledPlayer ( t ); 
-			 	playerColor = "#ffffff";
-
-			};
-
-			this.context.beginPath();
-			this.context.fillStyle = playerColor;
-			this.context.arc( player.boid.position.x, player.boid.position.y, player.radius, Math.PI * 2, false );
-			this.context.fill();
-
-			//draw direction nose 
-			let angle = Math.atan2( player.boid.velocity.y, player.boid.velocity.x );
-			let x = player.boid.position.x + player.radius * Math.cos( angle );
-			let y = player.boid.position.y + player.radius * Math.sin( angle );
-
-			this.context.fillStyle = '#f00';
-			this.context.beginPath();
-			this.context.arc( x, y, 3, 0, 2 * Math.PI, false );
-			this.context.fill();
-
-		};
-
+		console.log( "client update w/ data " + data.state );
+	
 	};
 
-	reset() {
+};
 
-		this.players.length = 0;
-		this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
-		cancelAnimationFrame( RAF );
+//let gameclient = new gameClient();
+//let urlParams = new URLSearchParams( window.location.search );
+//let id = urlParams.get( 'id' );
 
-	};
+// https://stackoverflow.com/questions/50219787/call-static-javascript-function-in-class-when-its-name-is-a-string
+// Add class to object to access static method with a variable name: that_object[varClassName]
+const objectifyClass = {
 
-	init( lobby, team, schemaRedTeam, schemaBlueTeam ) {
-
-		this.team = team;
-		this.lobby = lobby;
-
-		for( let i = 0; i < this.playerNum; i++ ) {
-
-			this.players.push( new Object() );
-
-			this.players[i].index = i;
-			this.players[i].lobby = this.lobby;
-			this.players[i].boid = new Boid();
-			this.players[i].boid.destination = new Vec2();
-			this.players[i].radius = 8;
-			this.players[i].AI = true;
-			this.players[i].state = new State( this.players[i], this.team );
-
-			if ( i < 11 ){
-				this.players[i].team = "redTeam";
-			} else {
-				this.players[i].team = "blueTeam";
-			};
-
-			this.players[i].state.pushState( "wait" );
-
-		};
-
-		//this.formation( schemaRedTeam, schemaBlueTeam )
-		this.loop();
-		this.initButton();
-
-	};
-
-	updatePlayer( obj ) {
-
-		this.players[ obj.player.index ].boid.destination.x = obj.player.destination.x;
-		this.players[ obj.player.index ].boid.destination.y = obj.player.destination.y;
-		this.players[ obj.player.index ].boid.velocity.x = obj.player.velocity.x; 
-		this.players[ obj.player.index ].boid.velocity.y = obj.player.velocity.y;
-		this.players[ obj.player.index ].boid.rotate = obj.player.rotate;
-		
-		// highlight player mouse buttun
-		if ( this.players[ obj.player.index ].color != "#ffffff" ){
-			this.players[ obj.player.index ].color = obj.player.color;
-		};
-
-		// highlight player controlled
-		if ( this.players[ obj.player.index ].state.getCurrentState() == "controlled" ){
-			this.players[ obj.player.index ].color = "#ffffff";
-		};
-
-		this.players[ obj.player.index ].team = obj.player.team;
-		this.players[ obj.player.index ].state.popState();
-		this.players[ obj.player.index ].state.pushState( obj.player.state );
-
-	};
-
-	updateControlledPlayer( obj ) {
-
-		this.players[ obj.player.index ].boid.position.x = obj.player.position.x;
-		this.players[ obj.player.index ].boid.position.y = obj.player.position.y;
-		this.players[ obj.player.index ].boid.velocity.x = obj.player.velocity.x;
-		this.players[ obj.player.index ].boid.velocity.y = obj.player.velocity.y;		
-		this.players[ obj.player.index ].state.popState();
-		this.players[ obj.player.index ].state.pushState( obj.player.state );
-
-	};
-
-	moveControlledPlayer( controlledIndex ){
-
-		let player = this.players[ controlledIndex ];
-
-		let angle = this.getAngle();
-
-		if ( angle != 0 ){
-
-			player.boid.velocity.x = Math.cos( angle );
-			player.boid.velocity.y = Math.sin( angle ) * -1;//invert direction
-
-			player.boid.position.x += player.boid.velocity.x;
-			player.boid.position.y += player.boid.velocity.y;
-		
-			if ( socket.readyState == socket.OPEN ){
-			
-				socket.send( JSON.stringify( {		
-					player: {
-						index: player.index,
-						position: {
-							x: player.boid.position.x,
-							y: player.boid.position.y
-						},
-						velocity: {
-							x: player.boid.velocity.x,
-							y: player.boid.velocity.y
-						},					
-						lobby: player.lobby,
-						team: player.team,
-						state: "controlled"
-					}
-
-				}));
-
-			};
-
-		};
-
-	};
-
-	initButton(){
-
-		Array.from( document.getElementsByClassName( "inside" ) ).forEach( function( element, index ) {
-
-			element.style.cursor = "default";
-			if ( element.classList.contains( this.team ) ) element.style.cursor = "pointer"; 
-
-			if ( element.classList.contains( "green" ) ){
-				element.classList.remove( "green" );
-			};
-
-			if ( element.classList.contains( "orange" ) ){
-				element.classList.remove( "orange" );
-			};
-
-				
-		}.bind( this ) );
-
-	};
-
+	//Attacking,
+	//ChaseBall,
+	//Defending,
+	//Dribble,
+	//InterceptBall,
+	//KickBall,
+	//ReceiveBall,
+	//ReturnToHomeRegion,
+	//SupportAttacker,
+	//Wait
 
 };
