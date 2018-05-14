@@ -16,7 +16,7 @@ class SoccerTeam {
         if ( this.Color() == this.blue ) {
             //goalkeeper
             this.m_Players.push( new GoalKeeper( this,
-                    0,
+                    1,
                     TendGoal.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -30,7 +30,7 @@ class SoccerTeam {
 
             //create the players
             this.m_Players.push( new FieldPlayer( this,
-                    1,
+                    4,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -44,7 +44,7 @@ class SoccerTeam {
                     1 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    2,
+                    5,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -58,7 +58,7 @@ class SoccerTeam {
                     2 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    3,
+                    6,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -72,7 +72,7 @@ class SoccerTeam {
                     3 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    4,
+                    7,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -86,7 +86,7 @@ class SoccerTeam {
                     4 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    5,
+                    9,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -100,7 +100,7 @@ class SoccerTeam {
                     5 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    6,
+                    10,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -114,7 +114,7 @@ class SoccerTeam {
                     6 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    7,
+                    11,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -128,7 +128,7 @@ class SoccerTeam {
                     7 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    8,
+                    12,
                     Wait.Instance(),
                     new Vector2D( 0, 1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -141,11 +141,38 @@ class SoccerTeam {
                     8,
                     8 ) );
  
+             this.m_Players.push( new FieldPlayer( this,
+                    13,
+                    Wait.Instance(),
+                    new Vector2D( 0, 1 ),
+                    new Vector2D( 0.0, 0.0 ),
+                    Prm.PlayerMass,
+                    Prm.PlayerMaxForce,
+                    Prm.PlayerMaxSpeedWithoutBall,
+                    Prm.PlayerMaxTurnRate,
+                    Prm.PlayerScale,
+                    PlayerBase.player_role().defender,
+                    9,
+                    9 ) );
+
+            this.m_Players.push( new FieldPlayer( this,
+                    14,
+                    Wait.Instance(),
+                    new Vector2D( 0, 1 ),
+                    new Vector2D( 0.0, 0.0 ),
+                    Prm.PlayerMass,
+                    Prm.PlayerMaxForce,
+                    Prm.PlayerMaxSpeedWithoutBall,
+                    Prm.PlayerMaxTurnRate,
+                    Prm.PlayerScale,
+                    PlayerBase.player_role().defender,
+                    10,
+                    10 ) );
 
         } else {
             //goalkeeper
            this.m_Players.push( new GoalKeeper( this,
-                    17,
+                    29,
                     TendGoal.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -154,12 +181,12 @@ class SoccerTeam {
                     Prm.PlayerMaxSpeedWithoutBall,
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
-                    9,
+                    11,
                     0 ) );
 
             //create the players
             this.m_Players.push( new FieldPlayer( this,
-                    16,
+                    27,
                     Wait.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -169,11 +196,11 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
-                    10,
+                    12,
                     1 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    15,
+                    26,
                     Wait.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -183,11 +210,11 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
-                    11,
+                    13,
                     2 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    14,
+                    25,
                     Wait.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -197,11 +224,11 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
-                    12,
+                    14,
                     3 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    13,
+                    24,
                     Wait.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -211,39 +238,11 @@ class SoccerTeam {
                     Prm.PlayerMaxTurnRate,
                     Prm.PlayerScale,
                     PlayerBase.player_role().attacker,
-                    13,
+                    15,
                     4 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    12,
-                    Wait.Instance(),
-                    new Vector2D( 0, -1 ),
-                    new Vector2D( 0.0, 0.0 ),
-                    Prm.PlayerMass,
-                    Prm.PlayerMaxForce,
-                    Prm.PlayerMaxSpeedWithoutBall,
-                    Prm.PlayerMaxTurnRate,
-                    Prm.PlayerScale,
-                    PlayerBase.player_role().defender,
-                    14,
-                    5 ) );
-
-            this.m_Players.push( new FieldPlayer( this,
-                    11,
-                    Wait.Instance(),
-                    new Vector2D( 0, -1 ),
-                    new Vector2D( 0.0, 0.0 ),
-                    Prm.PlayerMass,
-                    Prm.PlayerMaxForce,
-                    Prm.PlayerMaxSpeedWithoutBall,
-                    Prm.PlayerMaxTurnRate,
-                    Prm.PlayerScale,
-                    PlayerBase.player_role().defender,
-                    15,
-                    6 ) );
-
-            this.m_Players.push( new FieldPlayer( this,
-                    10,
+                    23,
                     Wait.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -254,10 +253,10 @@ class SoccerTeam {
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
                     16,
-                    7 ) );
+                    5 ) );
 
             this.m_Players.push( new FieldPlayer( this,
-                    9,
+                    22,
                     Wait.Instance(),
                     new Vector2D( 0, -1 ),
                     new Vector2D( 0.0, 0.0 ),
@@ -268,7 +267,63 @@ class SoccerTeam {
                     Prm.PlayerScale,
                     PlayerBase.player_role().defender,
                     17,
+                    6 ) );
+
+            this.m_Players.push( new FieldPlayer( this,
+                    20,
+                    Wait.Instance(),
+                    new Vector2D( 0, -1 ),
+                    new Vector2D( 0.0, 0.0 ),
+                    Prm.PlayerMass,
+                    Prm.PlayerMaxForce,
+                    Prm.PlayerMaxSpeedWithoutBall,
+                    Prm.PlayerMaxTurnRate,
+                    Prm.PlayerScale,
+                    PlayerBase.player_role().defender,
+                    18,
+                    7 ) );
+
+            this.m_Players.push( new FieldPlayer( this,
+                    18,
+                    Wait.Instance(),
+                    new Vector2D( 0, -1 ),
+                    new Vector2D( 0.0, 0.0 ),
+                    Prm.PlayerMass,
+                    Prm.PlayerMaxForce,
+                    Prm.PlayerMaxSpeedWithoutBall,
+                    Prm.PlayerMaxTurnRate,
+                    Prm.PlayerScale,
+                    PlayerBase.player_role().defender,
+                    19,
                     8 ) );
+
+            this.m_Players.push( new FieldPlayer( this,
+                    17,
+                    Wait.Instance(),
+                    new Vector2D( 0, -1 ),
+                    new Vector2D( 0.0, 0.0 ),
+                    Prm.PlayerMass,
+                    Prm.PlayerMaxForce,
+                    Prm.PlayerMaxSpeedWithoutBall,
+                    Prm.PlayerMaxTurnRate,
+                    Prm.PlayerScale,
+                    PlayerBase.player_role().defender,
+                    20,
+                    9 ) );
+
+            this.m_Players.push( new FieldPlayer( this,
+                    16,
+                    Wait.Instance(),
+                    new Vector2D( 0, -1 ),
+                    new Vector2D( 0.0, 0.0 ),
+                    Prm.PlayerMass,
+                    Prm.PlayerMaxForce,
+                    Prm.PlayerMaxSpeedWithoutBall,
+                    Prm.PlayerMaxTurnRate,
+                    Prm.PlayerScale,
+                    PlayerBase.player_role().defender,
+                    21,
+                    10 ) );            
                                
         };
 
@@ -416,11 +471,11 @@ class SoccerTeam {
            this.m_Players[it].Render();
         };
 
-        let blueTeamState = "";
-        let redTeamState = "";
+        //let blueTeamState = "";
+        //let redTeamState = "";
 
         //define(SHOW_TEAM_STATE);
-        //if ( def( SHOW_TEAM_STATE ) ) {
+        /*if ( def( SHOW_TEAM_STATE ) ) {
             if ( this.Color() == this.red ) {
                 //gdi.TextColor( 255, 0, 0 );
 
@@ -460,23 +515,23 @@ class SoccerTeam {
                     redTeamState = "Kickoff";
                 };
             };
-        //};
-
+        };
+		*/
 
         //show the controlling team and player at the top of the display
         //if ( Prm.bShowControllingTeam ) {
 
         //    gdi.TextColor( 255, 255, 255 );
 
-            let controllingPlayer = "";
+            //let controllingPlayer = "";
 
-            if ( this.m_pControllingPlayer != null ) {
+            //if ( this.m_pControllingPlayer != null ) {
                 //gdi.TextAtPos( this.Pitch().cxClient() - 150, 13,
                 //        "Controlling Player: " + ttos( this.m_pControllingPlayer.ID() ) );
                 
-                controllingPlayer = this.m_pControllingPlayer.ID();                
+            //    controllingPlayer = this.m_pControllingPlayer.ID();                
 
-            };
+            //};
 
             /*
 
@@ -497,18 +552,18 @@ class SoccerTeam {
         //};
 
         //render the sweet spots
-        if ( Prm.bSupportSpots && this.InControl() ) {
-            this.m_pSupportSpotCalc.Render();
-        };
+        //if ( Prm.bSupportSpots && this.InControl() ) {
+        //    this.m_pSupportSpotCalc.Render();
+        //};
 
         // define(SHOW_SUPPORTING_PLAYERS_TARGET)
-        if ( def( SHOW_SUPPORTING_PLAYERS_TARGET ) ) {
-            if ( this.m_pSupportingPlayer != null ) {
+        //if ( def( SHOW_SUPPORTING_PLAYERS_TARGET ) ) {
+        //    if ( this.m_pSupportingPlayer != null ) {
                 //gdi.BlueBrush();
                 //gdi.RedPen();
                 //gdi.Circle( this.m_pSupportingPlayer.Steering().Target(), 4 );
-            };
-        };
+        //    };
+        //};
 
     };
 
@@ -928,7 +983,7 @@ class SoccerTeam {
             //only attackers utilize the BestSupportingSpot
             if ( ( cur.Role() == PlayerBase.player_role().attacker ) && ( cur != this.m_pControllingPlayer ) ) {
                 //calculate the dist. Use the squared value to avoid sqrt
-                let dist = Vector2D.Vec2DDistanceSq(cur.Pos(), this.m_pSupportSpotCalc.GetBestSupportingSpot() );
+                let dist = Vector2D.Vec2DDistanceSq( cur.Pos(), this.m_pSupportSpotCalc.GetBestSupportingSpot() );
 
                 //if the distance is the closest so far and the player is not a
                 //goalkeeper and the player is not the one currently controlling
@@ -1012,7 +1067,7 @@ class SoccerTeam {
     };
 
     SetControllingPlayer( plyr ) {
-        this.m_pControllingPlayer = plyr;
+		this.m_pControllingPlayer = plyr;
 
         //rub it in the opponents faces!
         this.Opponents().LostControl();
@@ -1047,7 +1102,7 @@ class SoccerTeam {
         //assert ( ( plyr >= 0 ) && ( plyr < m_Players.size() ) );
         if ( !( plyr >= 0 ) && ( plyr < m_Players.size() ) ){
             console.log ( " SetPlayerHomeRegion plyr index out of range " );
-        }
+        };
 
         this.m_Players[ plyr ].SetHomeRegion( region );
     };

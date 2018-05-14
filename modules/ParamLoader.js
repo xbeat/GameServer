@@ -26,7 +26,7 @@ var ParamLoader = function() {
 
   this.KeeperInBallRange = 10.0;
   this.PlayerInTargetRange = 10.0 ;
-  this.PlayerKickingDistance = 11.0;
+  this.PlayerKickingDistance = 18.0;
   this.PlayerKickFrequency = 8.0;
 
   this.PlayerMass = 3.0;
@@ -55,13 +55,13 @@ var ParamLoader = function() {
   this.BallWithinReceivingRange = 10.0;
 
   //debug states
-  this.bIDs = true;
-  this.bStates = true;
-  this.bRegions = true;
-  this.bSupportSpots = true;
-  this.bShowControllingTeam = true;
+  this.bIDs = false;
+  this.bStates = false;
+  this.bRegions = false;
+  this.bSupportSpots = false;
+  this.bShowControllingTeam = false;
   this.bViewTargets = false;
-  this.bHighlightIfThreatened = true;
+  this.bHighlightIfThreatened = false;
 
   this.FrameRate = 60;
 

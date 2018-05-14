@@ -6,6 +6,11 @@ const http = require( 'http' );
 const uuidv4 = require( 'uuid/v4' );
 const url = require( 'url' );
 
+const PrecisionTimer = require( './modules/PrecisionTimer.js' );
+
+let timer = new PrecisionTimer();
+timer.Start();
+
 const GameServer = require( './modules/GameServer.js' );
 
 const app = express();
@@ -16,17 +21,13 @@ app.get( '/', function( req, res ){
 
 	res.sendFile( __dirname + "/start.html" );
 	
-	// Cookies that have not been signed
-	//console.log( 'Cookies: ', req.cookies );
-
-	// Cookies that have been signed
-	//console.log( 'Signed Cookies: ', req.signedCookies );
-
 });
 
 class Server {
 
 	constructor(){
+
+		this.gameServer;
 
 		this.emitter = require( './emitter.js' );
 
@@ -36,7 +37,7 @@ class Server {
 
 			this.onConnection( ws );
 
-			ws.on( 'message', function connection( data ) {
+			ws.on( 'message', function message( data ) {
 
 				this.onMessage( data, ws );
 				
@@ -46,52 +47,29 @@ class Server {
 
 	};
 
-
 	onConnection( ws ) {
 		
-		console.log( "Connected" );
-
 		this.lobby = uuidv4();
-		this.team = "redTeam";
-
 		this.emitter.init( ws );
-		this.gameServer = new GameServer();
 
-		this.emitter.send( {		
-					player: {
-						team: this.team,
-						lobby: this.lobby,
-						state: "connected",
-					}});
+		if ( !this.gameServer ) { 
+		
+			this.gameServer = new GameServer( timer );
+
+		};
 
 	};
 
-
 	onMessage( data, ws ) {
 
-		console.log( "Message" );
 		let JSONdata = JSON.parse( data )
 
-		if( "state" in JSONdata.player ) {
+		if( "state" in JSONdata ) {
 
-			switch( JSONdata.player.state ) {
+			switch( JSONdata.state ) {
 				
-				case "connected":
-				case "shoot":
 				case "reset":
-					this.emitter.send( JSONdata );
-					break;
-
-				case "getValue":
-
-					ws.send( JSON.stringify( { 
-							player: {
-								team: this.team,
-								lobby: this.lobby,
-								state: "receive",
-								data: this.emitter.queue.getValue( JSONdata.player.team, JSONdata.player.lobby )
-							}})
-						);					
+					this.gameServer == null;					
 					break;
 
 			};

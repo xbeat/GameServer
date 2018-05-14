@@ -21,8 +21,9 @@ class Attacking {
         };
 
         //these define the home regions for this state of each of the players
-        let BlueRegions = [ 1, 12, 14, 6, 4 ];
-        let RedRegions = [ 16, 3, 5, 9, 13 ];
+        let BlueRegions = [ 1, 12, 13, 14, 15, 20, 21, 22, 23, 25, 26 ];
+        let RedRegions = [ 29, 19, 18, 17, 16, 8, 9, 10, 11, 4, 5 ];
+
 
         //set up the player's home regions
         if ( team.Color() == SoccerTeam.blue() ) {

@@ -1,14 +1,16 @@
-
 class Scene3D{
 
 	constructor(){
 
-		this.maxPlayers = 18;
+		let scope = this;
+
+		this.maxPlayers = 22;
 		this.mixer = new Array();
 		this.clock = new THREE.Clock();
 		this.players = new Array();
 		this.playerSelected = 0;
-		this.playerIndex = 0
+		this.playerIndex = 0;
+		this.gameCreated = false;
 
 		this.scene = new THREE.Scene();
 		this.scene.add ( new THREE.AmbientLight( 0xffffff ) );
@@ -56,10 +58,25 @@ class Scene3D{
 
 		document.body.appendChild( this.renderer.domElement );
 
+		// --------- Create Soccer Ball ----------		
+     	let buffgeoSphere = new THREE.BufferGeometry();
+        buffgeoSphere.fromGeometry( new THREE.SphereGeometry( 1, 20, 10 ) );
+	    let ballTexture = new THREE.TextureLoader().load( 'models/ball/ball.png' );			        
+        var ballMaterial = new THREE.MeshLambertMaterial({ 
+            color: 0xffffff, 
+            map: ballTexture
+        });
+        
+        this.ball3D = new THREE.Mesh( buffgeoSphere, ballMaterial );
+        
+        this.ball3D.castShadow = true;
+
+		this.ball3D.scale.set( 6, 6, 6 );
+		this.ball3D.position.set( 0, 5, 0 );
+		this.scene.add( this.ball3D );
+
 		// ------------- load Player -------------
 		let url = 'models/player/Player.json';
-		let scope = this;
-		this.player;
 
 		new THREE.ObjectLoader().load( url, function ( loadedObject ) {
 			loadedObject.traverse( function ( child ) {
@@ -70,29 +87,37 @@ class Scene3D{
 			} );
 
 			if ( scope.player === undefined ) {
-				alert( 'Unable to find a Player Model in this place:\n\n' + url + '\n\n' );
+				alert( 'Unable to find a Player Model in this path:\n\n' + url + '\n\n' );
 				return;
 			};
 
-			// golabl method & start rendering
-			g_SoccerPitch = new SoccerPitch( scope );
-			ball = g_SoccerPitch.m_pBall;
-			red = g_SoccerPitch.m_pRedTeam;
-			blue = g_SoccerPitch.m_pBlueTeam;
+			//  ------------ Pitch ----------------			
+			new THREE.ObjectLoader().load( "models/pitch/stadium.json", function( pitch ) {
+				
+				pitch.position.set( -50, -30, -100 );
+				pitch.scale.set( 800, 800, 800 );
+				scope.scene.add( pitch );
+				scope.pitch = pitch;
 
-			step();
+				if ( scope.pitch === undefined ) {
+					alert( 'Unable to find the Pitch Model in this path:\n\n' + url + '\n\n' );
+					return;
+				};
+
+				// global method & start rendering
+				g_SoccerPitch = new SoccerPitch( scope );
+				ball = g_SoccerPitch.m_pBall;
+				red = g_SoccerPitch.m_pRedTeam;
+				blue = g_SoccerPitch.m_pBlueTeam;
+
+				step();
+			
+			});
 
 		});
 		
-		//  ------------ Pitch ----------------			
-		new THREE.ObjectLoader().load( "models/pitch/stadium.json", function( pitch ) {
-			
-			pitch.position.set( -50, -30, -100 );
-			pitch.scale.set( 800, 800, 800 );
-			scope.scene.add( pitch );
-			scope.pitch = pitch;
-
-		});
+		// ------------- Red Uniform ------------
+		this.uniformRed = new THREE.TextureLoader().load( 'models/player/BodyDressed_UnitedUniformRed.png' );
 
 		// --------- Create Sky Scene -----------
 		let path = "models/skyscene/";
@@ -125,23 +150,6 @@ class Scene3D{
 		skyMesh.position.set( 0, -500, 0)
 		this.scene.add( skyMesh );
 		
-		// --------- Soccer Ball ----------		
-     	let buffgeoSphere = new THREE.BufferGeometry();
-        buffgeoSphere.fromGeometry( new THREE.SphereGeometry( 1, 20, 10 ) );
-	    let ballTexture = new THREE.TextureLoader().load( 'models/ball/ball.png' );			        
-        var ballMaterial = new THREE.MeshLambertMaterial({ 
-            color: 0xffffff, 
-            map: ballTexture
-        });
-        
-        this.ball3D = new THREE.Mesh( buffgeoSphere, ballMaterial );
-        
-        this.ball3D.castShadow = true;
-		//ball[i].receiveShadow = true;
-		this.scene.add( this.ball3D );
-		this.ball3D.scale.set( 6, 6, 6 );
-		this.ball3D.position.set( 0, 5, 0 );
-
 		//------------ Ring -------------
 		let ringGeom = new THREE.RingGeometry( 30, 70, 32 );
 		let ringMaterial = new THREE.MeshLambertMaterial( { color: 0xff0000, transparent: true, opacity: 0.5 } );
@@ -174,10 +182,10 @@ class Scene3D{
 		this.scene.add( this.players[ this.playerIndex ] );
 
 		// Add Uniform
-		if ( this.playerIndex < ( this.maxPlayers / 2 ) - 1 ){
+		if ( this.playerIndex < ( this.maxPlayers / 2 ) ){
 		
 			//https://stackoverflow.com/questions/11919694/how-to-clone-an-object3d-in-three-js
-			this.players[ this.playerIndex ].material.map = new THREE.TextureLoader().load( 'models/player/BodyDressed_UnitedUniformRed.png' );
+			this.players[ this.playerIndex ].material.map = this.uniformRed;
 		
 		};
 
@@ -187,8 +195,6 @@ class Scene3D{
 		this.mixer[ this.playerIndex ].clipAction( 'idle' ).play();
 		this.mixer[ this.playerIndex ].clipAction( 'walk' ).play();
 		this.mixer[ this.playerIndex ].clipAction( 'run' ).play();
-
-		this.playerIndex++;
 
 	};
 
@@ -239,15 +245,26 @@ class Scene3D{
 			this.mixer[ i ].update( mixerUpdateDelta );
 		};
 		
-		if ( this.followObject ){
-			this.camera.lookAt( this.ball3D.position );
-        } else {
-			//this.camera.lookAt( new THREE.Vector3( 0, 0, 0 ) );
-			//this.camera.lookAt( this.CameraLookAt );
-        };
-
 		this.renderer.render( this.scene, this.camera );
 
 	};
+
+	restartGame(){
+
+		// global method & restart rendering
+		cancelAnimationFrame( RAF );
+		this.playerIndex = 0;
+		this.gameCreated = true;
+
+		g_SoccerPitch = new SoccerPitch( this );
+		ball = g_SoccerPitch.m_pBall;
+		red = g_SoccerPitch.m_pRedTeam;
+		blue = g_SoccerPitch.m_pBlueTeam;
+
+		step();
+
+		socket.send( JSON.stringify( { state: "reset" } ) );
+
+	};	
 
 };

@@ -17,15 +17,15 @@ class Defending {
         };
 
         //these define the home regions for this state of each of the players
-        let BlueRegions = [ 1, 6, 8, 3, 5 ];
-        let RedRegions = [ 16, 9, 11, 12, 14 ];
+        let BlueRegions = [ 1, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14 ];
+        let RedRegions = [ 29, 27, 26, 25, 24, 23, 22, 20, 18, 17, 16 ];
 
         //set up the player's home regions
         if ( team.Color() == SoccerTeam.blue() ) {
             TeamStates.ChangePlayerHomeRegions( team, BlueRegions );
         } else {
             TeamStates.ChangePlayerHomeRegions( team, RedRegions );
-        }
+        };
 
         //if a player is in either the Wait or ReturnToHomeRegion states, its
         //steering target must be updated to that of its new home region

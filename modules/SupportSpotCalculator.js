@@ -70,14 +70,14 @@ class SupportSpotCalculator {
         //gdi.HollowBrush();
         //gdi.PurplePen();
 
-        for ( let spt = 0; spt < this.m_Spots.length; ++spt ) {
+        //for ( let spt = 0; spt < this.m_Spots.length; ++spt ) {
             //gdi.Circle( this.m_Spots[ spt ].m_vPos, this.m_Spots[ spt ].m_dScore );
-        }
+        //}
 
-        if ( this.m_pBestSupportingSpot != null ) {
+        //if ( this.m_pBestSupportingSpot != null ) {
             //gdi.GreenPen();
             //gdi.Circle( this.m_pBestSupportingSpot.m_vPos, this.m_pBestSupportingSpot.m_dScore );
-        };
+        //};
     };
 
     /**

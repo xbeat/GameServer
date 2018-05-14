@@ -20,7 +20,10 @@ class SoccerPitch {
         this.m_pRedTeam = new SoccerTeam( "red", this.scene3D );
         this.m_pBlueTeam = new SoccerTeam( "blue", this.scene3D );
 
-        this.pitch();
+		if ( this.scene3D.gameCreated == false ){
+	        this.pitch();
+
+	    };
 
     };
 
@@ -192,12 +195,21 @@ class SoccerTeam {
         
 		//goalkeeper
 		this.m_Players.push( new GoalKeeper( this ) );
-		this.scene3D.addPlayer();
-		
-		//create the players
-		for ( let players = 0; players < 8; players++ ){
-			this.m_Players.push( new FieldPlayer( this ) );
+
+		if ( this.scene3D.gameCreated == false ){
 			this.scene3D.addPlayer();
+		};
+		this.scene3D.playerIndex++;
+
+		//create the players
+		for ( let players = 0; players < ( this.scene3D.maxPlayers / 2 ) - 1; players++ ){
+			this.m_Players.push( new FieldPlayer( this ) );
+			
+			if ( this.scene3D.gameCreated == false ){
+				this.scene3D.addPlayer();				
+			};
+			this.scene3D.playerIndex++;
+
 		};
 
     };

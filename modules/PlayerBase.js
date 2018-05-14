@@ -143,7 +143,7 @@ class PlayerBase extends MovingEntity {
      */
     TrackBall() {
         this.RotateHeadingToFacePosition( this.Ball().Pos() );
-    }
+    };
 
     /**
      * sets the player's heading to point at the current target

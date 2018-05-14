@@ -21,6 +21,7 @@ class KickBall {
     };
 
     Enter( player ) {
+
         //let the team know this player is controlling
         player.Team().SetControllingPlayer( player );
 
@@ -36,6 +37,15 @@ class KickBall {
     };
 
     Execute( player ) {
+
+    	//player player lose control after get KickBall state    
+        if ( player.Team().ControllingPlayer( player ) === null ) {      
+
+ 			player.GetFSM().ChangeState( ChaseBall.Instance() ); 
+ 			return;			
+
+	    };
+
         //calculate the dot product of the vector pointing to the ball
         //and the player's heading
         let ToBall = Vector2D.sub( player.Ball().Pos(), player.Pos() );
@@ -49,7 +59,7 @@ class KickBall {
                 || ( dot < 0 ) ) {
             if ( def( PLAYER_STATE_INFO_ON ) ) {
                console.log( "Goaly has ball / ball behind player" );
-            }
+            };
 
             player.GetFSM().ChangeState( ChaseBall.Instance() );
 

@@ -40,8 +40,8 @@ class SoccerPitch {
     //------------------------------- ctor -----------------------------------
     //------------------------------------------------------------------------
     constructor( cx, cy ) {
-        this.NumRegionsHorizontal = 6;
-        this.NumRegionsVertical = 3;
+        this.NumRegionsHorizontal = 8;
+        this.NumRegionsVertical = 4;
         this.m_cxClient = cx;
         this.m_cyClient = cy;
         this.m_bPaused = false;
@@ -133,14 +133,8 @@ class SoccerPitch {
         this.m_pBlueTeam.Update();
 
         //if a goal has been detected reset the pitch ready for kickoff
-        if ( this.m_pBlueGoal.Scored( this.m_pBall ) || this.m_pRedGoal.Scored( this.m_pBall ) || this.gameReset == true ) {
+        if ( this.m_pBlueGoal.Scored( this.m_pBall ) || this.m_pRedGoal.Scored( this.m_pBall ) ) {
             this.m_bGameOn = false;
-
-            if ( this.gameReset == true ){
-				this.gameReset = false;
-	            this.m_pBlueGoal.m_iNumGoalsScored = 0;
-    	        this.m_pRedGoal.m_iNumGoalsScored = 0;            
-            };
 
             //update score
             // the score is inversed because the team that make the score 
@@ -154,6 +148,7 @@ class SoccerPitch {
             //get the teams ready for kickoff
             this.m_pRedTeam.GetFSM().ChangeState( PrepareForKickOff.Instance() );
             this.m_pBlueTeam.GetFSM().ChangeState( PrepareForKickOff.Instance() );
+
         };
     };
 

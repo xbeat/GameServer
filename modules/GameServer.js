@@ -1,13 +1,13 @@
 const SoccerPitch = require( '../modules/SoccerPitch.js' );
-const PrecisionTimer = require( '../modules/PrecisionTimer.js' );
 
 class GameServer {
 
-	constructor( redTeam = 0, blueTeam = 0, lobby = 0 ){
+	constructor( timer, redTeam = 0, blueTeam = 0, lobby = 0 ){
 
 		this.redTeam = redTeam; 
 		this.blueTeam = blueTeam;
 		this.lobby = lobby;
+		this.timer = timer;
 
 		/**
 		Length of a tick in milliseconds. The denominator is your desired framerate.
@@ -20,56 +20,42 @@ class GameServer {
 		this.previousTick = Date.now();
 		
 		// number of times gameLoop gets called
-		this.actualTicks = 0;
 		this.then = Date.now();
 
 		let cxClient = 460;//600
 		let cyClient = 290;//380
 
 		this.g_SoccerPitch = new SoccerPitch( cxClient, cyClient );
-		this.timer = new PrecisionTimer();
-		this.timer.Start();
-
-		this.init();
-
-	};
-
-	init(){
+		this.active = true;
 
 		this.loop();
-	
+
 	};
 
 	loop(){
 	
 		let now = Date.now();
 
-		this.actualTicks++;
-
 		if ( this.previousTick + this.tickLengthMs <= now ) {
 			let delta = ( now - this.previousTick ) / 30;
 			this.previousTick = now;
 
 		    //update
-		    if ( this.timer.ReadyForNextFrame() ) {
+		    if ( this.timer.ReadyForNextFrame() && this.active ) {
 		    	
 			        this.g_SoccerPitch.Update();
 			        this.g_SoccerPitch.Render();
 
 		    };
 			
-			//console.log( 'delta', delta, '(target: ' + this.tickLengthMs +' ms)', 'node ticks', this.actualTicks );
-			this.actualTicks = 0;
-
 		};
 
 		if ( Date.now() - this.previousTick < this.tickLengthMs - 16 ) {
-
-			setTimeout( this.loop.bind( this ) ); 
+			if ( this.active ) setTimeout( this.loop.bind( this ) ); 
 		
 		} else {
 		
-			setImmediate( this.loop.bind( this ) );
+			if ( this.active ) setImmediate( this.loop.bind( this ) );
 		};
 
 	};
