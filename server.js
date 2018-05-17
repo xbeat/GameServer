@@ -1,6 +1,6 @@
 'user strict';
 const express = require( 'express' );
-
+const pg = require( 'pg' );
 const WebSocket = require( 'ws' );
 const http = require( 'http' );
 const uuidv4 = require( 'uuid/v4' );
@@ -23,9 +23,78 @@ app.get( '/', function( req, res ){
 	
 });
 
-class Server {
+class Database {
 
 	constructor(){
+
+		this.pool = new pg.Pool( {
+			user: 'giuseppecanale',
+			host: '127.0.0.1',
+			database: 'giuseppecanale',
+			password: '',
+			idleTimeoutMillis: 30000,
+			port: '5432' } );		
+
+	};
+
+	select( id, emitter ){
+
+		this.pool.query( 'SELECT * FROM parameters WHERE id = $1', [id], function( err, res ) {
+
+			if( err ) {
+				return console.error( 'error running SELECT ', err );
+			};
+
+			return emitter.Parameters( res.rows[0] );
+
+		});
+
+	};
+
+	insert(){
+
+		this.pool.query( 'INSERT INTO parameters(username, password) VALUES($1, $2) returning id', [req.body.username, req.body.password], function( err, res ) {
+
+			if( err ) {
+				return console.error( 'error running INSERT', err );
+			};
+
+		});
+
+	};
+
+	update( skillId, value ){
+
+		this.pool.query( `UPDATE parameters SET p${skillId} = $1 WHERE id = 1`, [value], function( err, res ) {
+
+			if( err ) {
+				return console.error( 'error running UPDATE', err );
+			};
+
+		});
+
+	};
+
+	delete(){
+
+		this.pool.query( 'DELETE FROM parameters WHERE id = $1', [req.params.id], function( err, res ) {
+
+			if( err ) {
+				return console.error( 'error running DELETE', err );
+			};
+
+		});
+	
+	};
+
+};
+
+
+class Server extends Database {
+
+	constructor(){
+
+		super();
 
 		this.gameServer;
 
@@ -52,6 +121,8 @@ class Server {
 		this.lobby = uuidv4();
 		this.emitter.init( ws );
 
+		this.select( "1", this.emitter );
+
 		if ( !this.gameServer ) { 
 		
 			this.gameServer = new GameServer( timer );
@@ -70,6 +141,10 @@ class Server {
 				
 				case "reset":
 					this.gameServer == null;					
+					break;
+
+				case "update":
+					this.update( JSONdata.skillId, JSONdata.value );					
 					break;
 
 			};

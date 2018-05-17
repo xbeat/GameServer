@@ -70,6 +70,19 @@ class Emitter {
 	
 	};
 
+	static Parameters( dataDb ) {
+
+		let data = {
+				e: "P",
+				V: dataDb
+			};
+
+		if ( this.ws.readyState == this.ws.OPEN ){
+			this.ws.send( JSON.stringify( data ) );
+		};
+
+	}; 
+
 };
 
 module.exports = Emitter;

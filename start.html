@@ -4,35 +4,27 @@
 		<title>AI-3D-Soccer xbe.at 1.0.1</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" type="text/css" media="screen,print" href="css/skill.css" />
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/userInterface.css" />
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/sidemenu.css" />
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/AI.css">
 
 		<style type="text/css">
 
-			.buttonInjectAI {
-				position: absolute;
-				left: 300px;
-				top:100px;
-				width:100px;
-				height:50px;
-			}
-
-			.virtualButton {
-				cursor: pointer;
+			body {
+				background-color: #000;
+				-webkit-touch-callout: none; /* iOS Safari */
+				-webkit-user-select: none; /* Safari */
+				-khtml-user-select: none; /* Konqueror HTML */
+				-moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* Internet Explorer/Edge */
+				user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 			}
 
 		</style>
 
 	</head>
 	<body>
-
-		<!--
-		<div class="virtualButton" id="buttonShoot">Shoot</div>
-	    <div class="virtualButton" id="buttonReset">Reset</div>
-	    <div class="virtualButton" id="buttonGetValue">Get Value</div>
-	    <div id="state">Data</div>
-		-->
 
 		<div class="xbeat-logo-wrapper">
 			<img class="xbeat-logo-up" src="../img/LogoXbeatLinear.svg" title="logo">
@@ -45,12 +37,6 @@
 		  <span></span>
 		</div>
 		
-		<!--
-		<div class="buttonInjectAI">
-			<a class="btn"><button onClick="injectAI()" class="sideMenuButton"><p class="sideMenuElement">Inject AI</p></button></a>
-		</div>
-		-->
-
 		<div class="menu-container">
 
 			<nav>
@@ -182,9 +168,71 @@
 				<div style="height: 100px;"></div>
 			</nav>
 		</div>
-		
-	</body>
 
+
+		<!-- ------------- -->
+	    <!-- Skill Change Value -->
+	    <div id="skill-change-value-container">
+	        <div id="qty-subtract" class="skill-change-value">    
+	            <a class="btn">-</a>
+	        </div>
+	        <div id="qty-addition" class="skill-change-value">    
+	            <a class="btn">+</a>
+	        </div>
+	    </div>
+
+	    <!-- ------------- -->
+	    <!-- Skill -->
+	    <div id="skill" class="skill">
+	        <div id="cross-close" class="cross-close">&larr;</div>
+	        <div class="skill-wrap lost">
+	            <div class="skill-value">
+	                <p id="SK0">0.00</p><div class="letter-holder">Off-side</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap lost">
+	            <div class="skill-value">
+	                <p id="SK1">0.00</p><div class="letter-holder">Pressing</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap lost">
+	            <div class="skill-value">
+	                <p id="SK2">0.00</p><div class="letter-holder">Aggressive defense</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap gain">
+	            <div class="skill-value">
+	                <p id="SK3">0.00</p><div class="letter-holder">Clearance</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap lost">
+	            <div class="skill-value">
+	                <p id="SK4">0.00</p><div class="letter-holder">Defensive possesion</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap gain">
+	            <div class="skill-value">
+	                <p id="SK5">0.00</p><div class="letter-holder">Wing play</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap gain">
+	            <div class="skill-value">
+	                <p id="SK6">0.00</p><div class="letter-holder">Through ball</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap gain">
+	            <div class="skill-value">
+	                <p id="SK7">0.00</p><div class="letter-holder">Give-and-go offense</div>
+	            </div>
+	        </div>
+	        <div class="skill-wrap lost">
+	            <div class="skill-value">
+	                <p id="SK8">0.00</p><div class="letter-holder">Direct football</div>
+	            </div>
+	        </div>
+	    </div>
+
+	</body>
 
 	<script>
 		
@@ -195,59 +243,6 @@
 			document.querySelector('.menu-container').classList.toggle('nav-open');
 		});
 
-		/*		
-		document.getElementById( "buttonShoot" ).addEventListener( "click", function(){
-
-			if ( socket.readyState == socket.OPEN ){
-			
-				socket.send( JSON.stringify( {		
-					player: {
-						lobby: obj.player.lobby,
-						team:  obj.player.team,
-						state: "shoot"
-					}
-
-				}));
-
-			};	
-
-		});
-
-		document.getElementById( "buttonReset" ).addEventListener( "click", function(){
-
-			if ( socket.readyState == socket.OPEN ){
-			
-				socket.send( JSON.stringify( {		
-					player: {
-						lobby: obj.player.lobby,
-						team:  obj.player.team,
-						state: "reset"
-					}
-
-				}));
-
-			};	
-
-		});
-
-		document.getElementById( "buttonGetValue" ).addEventListener( "click", function(){
-
-			if ( socket.readyState == socket.OPEN ){
-			
-				socket.send( JSON.stringify( {		
-					player: {
-						lobby: obj.player.lobby,
-						team:  obj.player.team,
-						state: "getValue"
-					}
-
-				}));
-
-			};	
-
-		});
-		*/
-
 	</script>
 
 	<script type="text/javascript" src="js/three.js"></script>
@@ -257,6 +252,7 @@
 	<script type="text/javascript" src="js/AI/C2DMatrix.js"></script>
 	<script type="text/javascript" src="js/AI/PrecisionTimer.js"></script>
 	<script type="text/javascript" src="js/AI/Cgdi.js"></script>
+	<script type="text/javascript" src="js/skill.js"></script>
 	<script type="text/javascript" src="js/gameClient.js"></script>
 
 </html>

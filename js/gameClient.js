@@ -28,6 +28,7 @@ var ball = null;
 var red = null;
 var blue = null;
 let scene3D = new Scene3D();
+let skill = new Skill();	
 
 // resize Scene 3D
 window.addEventListener( 'resize', function () {
@@ -57,9 +58,7 @@ let socket = new WebSocket( HOST + '/?serverState=state', 'echo-protocol' );
 
 // listening for server response
 socket.onmessage = function ( message ) { 
-
-	if ( ball == null || red == null || blue == null ) return; // wait for 3D instantiated
-
+	
 	let obj = JSON.parse( message.data );
 
 	if( typeof ( obj.e ) !== "undefined" ) {
@@ -70,11 +69,13 @@ socket.onmessage = function ( message ) {
 
 			case "B"://Ball
 				//document.getElementById( "state" ).innerText = obj.e;
+				if ( ball == null ) return; // wait for 3D instantiated
 				ball.m_vPosition.set( obj.P );
 				break;
 
 			case "F"://FieldPlayer
 				//document.getElementById( "state" ).innerText = obj.e;
+				if ( red == null || blue == null ) return; // wait for 3D instantiated
 				window[ color ].m_Players[ obj.I ].m_vPosition.set( obj.P );
 
 				window[ color ].m_Players[ obj.I ].m_vVelocity.x = Math.abs( window[ color ].m_Players[ obj.I ].m_vPosition.x - window[ color ].m_Players[ obj.I ].m_lastPosition.x ); 
@@ -86,6 +87,7 @@ socket.onmessage = function ( message ) {
 				break;
 
 			case "G"://GoalKeeper
+				if ( red == null || blue == null ) return; // wait for 3D instantiated
 				//document.getElementById( "state" ).innerText = obj.e;
 				window[ color ].m_Players[ obj.I ].m_vPosition.set( obj.P );
 
@@ -95,6 +97,11 @@ socket.onmessage = function ( message ) {
 
 				window[ color ].m_Players[ obj.I ].m_vLookAt.set( obj.L );
 				break;
+
+			case "P"://Parameters
+				//document.getElementById( "state" ).innerText = obj.e;
+				skill.setData( obj.V );
+				break;				
 		
 		};
 
