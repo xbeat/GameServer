@@ -1,0 +1,96 @@
+<style type="text/css">
+	#ball {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: black;
+    position: absolute;
+}
+
+#field {
+    width: 320px;
+    height: 240px;
+    position: absolute;
+    border: 1px solid black;
+    overflow: hidden;
+    top: 10px;
+    left: 10px;
+}
+
+#line {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    background-color: red;
+    top: 0px;
+    left: 0px;
+}
+
+#gline {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    background-color: green;
+    top: 0px;
+    left: 0px;
+}
+</style>
+<script type="text/javascript">
+	var x = 0;
+	var y = 0;
+
+	var vx = 0;
+	var vy = 0;
+
+	var g = -0.0981; // 9.81 m/s
+
+	window.update = function () {
+		var b = document.getElementById( 'ball' );
+
+		vy += g;
+
+		x += vx;
+		y += vy;
+
+		if (y < 0) {
+			y = 0;
+			vy *= -0.8; // elasticy of the ball/bounce
+		};
+
+		b.style.top = ( 230 - y ) + 'px';
+		b.style.left = x + 'px';
+	};
+
+	window.move = function() {
+		var l = document.getElementById( 'line' );
+		l.style.left = ( event.clientX - 10 ) + 'px';
+	};
+
+	window.kick = function() {
+
+		var l = document.getElementById( 'gline' );
+		l.style.left = ( event.clientX - 10 ) + 'px';
+
+		x = 0;
+		y = 0;
+
+		var tx = event.clientX - 15; // target position
+		// The 15 here is due to the offset and ball size
+
+		// The ball's horizontal velocity
+		vx = 2; // This could be range dependent as well
+
+		// Time till target
+		var dt = tx / vx;
+
+		// Adjust vertical velocity using half of that time
+		vy = -g * dt / 2;
+	};
+
+	setInterval( update, 10 );
+</script>
+<div id="field" onclick="kick();" onmousemove="move();">
+    <div id="ball"></div>
+    <div id="line"></div>
+    <div id="gline"></div>
+</div>
