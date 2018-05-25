@@ -41,6 +41,9 @@ window.addEventListener( 'resize', function () {
 let timer = new PrecisionTimer();
 timer.Start();
 
+let scoreboardTimer = new ScoreboardTimer();
+scoreboardTimer.Start();
+
 //----------- Entry Point -----------
 function step() {
 

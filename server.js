@@ -89,7 +89,6 @@ class Database {
 
 };
 
-
 class Server extends Database {
 
 	constructor(){
@@ -119,7 +118,8 @@ class Server extends Database {
 	onConnection( ws ) {
 		
 		this.lobby = uuidv4();
-		this.emitter.init( ws );
+		//this.emitter.init( ws ); // single connection
+		this.emitter.init( this.wss ); // for broadcast
 
 		this.select( "1", this.emitter );
 

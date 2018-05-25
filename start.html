@@ -1,12 +1,13 @@
 <html lang="en">
 	<head>
 
-		<title>AI-3D-Soccer xbe.at 1.0.1</title>
+		<title>xbe.at 1.0.1</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/skill.css" />
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/userInterface.css" />
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/sidemenu.css" />
+		<link rel="stylesheet" type="text/css" media="screen,print" href="css/scoreboard.css">
 		<link rel="stylesheet" type="text/css" media="screen,print" href="css/AI.css">
 
 		<style type="text/css">
@@ -64,55 +65,55 @@
 
 					<form class="formParams">
 	
-					    <div class="switch-field">
-					      <div class="switch-title">Show IDs</div>
-					      <input type="radio" id="switch_ids_on" onclick = "Prm.bIDs = true" name="switch_ids" value="on" />
-					      <label for="switch_ids_on">On</label>
-					      <input type="radio" id="switch_ids_off" onclick = "Prm.bIDs = false" name="switch_ids" value="off" checked/>
-					      <label for="switch_ids_off">Off</label>
-					    </div>
-					    <div class="switch-field">
-					      <div class="switch-title">Show States</div>
-					      <input type="radio" id="switch_states_on" onclick = "Prm.bStates = true" name="switch_states" value="on" />
-					      <label for="switch_states_on">On</label>
-					      <input type="radio" id="switch_states_off" onclick = "Prm.bStates = false" name="switch_states" value="off" checked/>
-					      <label for="switch_states_off">Off</label>
-					    </div>
-					    <div class="switch-field">
-					      <div class="switch-title">Show Regions</div>
-					      <input type="radio" id="switch_regions_on" onclick = "Prm.bRegions = true" name="switch_regions" value="on" />
-					      <label for="switch_regions_on">On</label>
-					      <input type="radio" id="switch_regions_off" onclick = "Prm.bRegions = false" name="switch_regions" value="off" checked/>
-					      <label for="switch_regions_off">Off</label>
-					    </div>
-					    <div class="switch-field">
-					      <div class="switch-title">Show Support Spots</div>
-					      <input type="radio" id="switch_support_on" onclick = "Prm.bSupportSpots = true" name="switch_support" value="on" />
-					      <label for="switch_support_on">On</label>
-					      <input type="radio" id="switch_support_off" onclick = "Prm.bSupportSpots = false" name="switch_support" value="off" checked/>
-					      <label for="switch_support_off">Off</label>
-					    </div>
-					    <div class="switch-field">
-					      <div class="switch-title">Show Targets</div>
-					      <input type="radio" id="switch_targets_on" onclick = "Prm.bViewTargets = true" name="switch_targets" value="on" />
-					      <label for="switch_targets_on">On</label>
-					      <input type="radio" id="switch_targets_off" onclick = "Prm.bViewTargets = false" name="switch_targets" value="off" checked/>
-					      <label for="switch_targets_off">Off</label>
-					    </div>
-					    <div class="switch-field">
-					      <div class="switch-title">Highlight if Threatened</div>
-					      <input type="radio" id="switch_threatened_on" onclick = "Prm.bHighlightIfThreatened = true" name="switch_threatened" value="on" />
-					      <label for="switch_threatened_on">On</label>
-					      <input type="radio" id="switch_threatened_off" onclick = "Prm.bHighlightIfThreatened = false" name="switch_threatened" value="off" checked/>
-					      <label for="switch_threatened_off">Off</label>
-					    </div>
-					    <div class="switch-field">
-					      <div class="switch-title">Non Penetration Constraint</div>
-					      <input type="radio" id="switch_penetration_on" onclick = "Prm.bNonPenetrationConstraint = true" name="switch_penetration" value="on" />
-					      <label for="switch_penetration_on">On</label>
-					      <input type="radio" id="switch_penetrattion_off" onclick = "Prm.bNonPenetrationConstraint = false" name="switch_penetration" value="off" checked/>
-					      <label for="switch_penetrattion_off">Off</label>
-					    </div>					    
+						<div class="switch-field">
+							<div class="switch-title">Show IDs</div>
+							<input type="radio" id="switch_ids_on" onclick = "Prm.bIDs = true" name="switch_ids" value="on" />
+							<label for="switch_ids_on">On</label>
+							<input type="radio" id="switch_ids_off" onclick = "Prm.bIDs = false" name="switch_ids" value="off" checked/>
+							<label for="switch_ids_off">Off</label>
+						</div>
+						<div class="switch-field">
+							<div class="switch-title">Show States</div>
+							<input type="radio" id="switch_states_on" onclick = "Prm.bStates = true" name="switch_states" value="on" />
+							<label for="switch_states_on">On</label>
+							<input type="radio" id="switch_states_off" onclick = "Prm.bStates = false" name="switch_states" value="off" checked/>
+							<label for="switch_states_off">Off</label>
+						</div>
+						<div class="switch-field">
+							<div class="switch-title">Show Regions</div>
+							<input type="radio" id="switch_regions_on" onclick = "Prm.bRegions = true" name="switch_regions" value="on" />
+							<label for="switch_regions_on">On</label>
+							<input type="radio" id="switch_regions_off" onclick = "Prm.bRegions = false" name="switch_regions" value="off" checked/>
+							<label for="switch_regions_off">Off</label>
+						</div>
+						<div class="switch-field">
+							<div class="switch-title">Show Support Spots</div>
+							<input type="radio" id="switch_support_on" onclick = "Prm.bSupportSpots = true" name="switch_support" value="on" />
+							<label for="switch_support_on">On</label>
+							<input type="radio" id="switch_support_off" onclick = "Prm.bSupportSpots = false" name="switch_support" value="off" checked/>
+							<label for="switch_support_off">Off</label>
+						</div>
+						<div class="switch-field">
+							<div class="switch-title">Show Targets</div>
+							<input type="radio" id="switch_targets_on" onclick = "Prm.bViewTargets = true" name="switch_targets" value="on" />
+							<label for="switch_targets_on">On</label>
+							<input type="radio" id="switch_targets_off" onclick = "Prm.bViewTargets = false" name="switch_targets" value="off" checked/>
+							<label for="switch_targets_off">Off</label>
+						</div>
+						<div class="switch-field">
+							<div class="switch-title">Highlight if Threatened</div>
+							<input type="radio" id="switch_threatened_on" onclick = "Prm.bHighlightIfThreatened = true" name="switch_threatened" value="on" />
+							<label for="switch_threatened_on">On</label>
+							<input type="radio" id="switch_threatened_off" onclick = "Prm.bHighlightIfThreatened = false" name="switch_threatened" value="off" checked/>
+							<label for="switch_threatened_off">Off</label>
+						</div>
+						<div class="switch-field">
+							<div class="switch-title">Non Penetration Constraint</div>
+							<input type="radio" id="switch_penetration_on" onclick = "Prm.bNonPenetrationConstraint = true" name="switch_penetration" value="on" />
+							<label for="switch_penetration_on">On</label>
+							<input type="radio" id="switch_penetrattion_off" onclick = "Prm.bNonPenetrationConstraint = false" name="switch_penetration" value="off" checked/>
+							<label for="switch_penetrattion_off">Off</label>
+						</div>				    
 
 					</form>
 
@@ -169,6 +170,29 @@
 			</nav>
 		</div>
 
+		<!-- ------------- -->
+	    <!-- Scoreboard Timer -->
+	    <div id="scoreboardTimer" class="scoreboardTimer">
+	        <div class="timer">
+	            <span class="minute">00</span>:<span class="second">00</span>
+	        </div>
+	        <div class="teamAContainer">
+	            <div class="nameTeamA">RED</div>
+	            <div class="colorTeamA">
+	                <div class="colorTeamAbar1"></div>
+	                <div class="colorTeamAbar2"></div>                
+	            </div>
+	        </div>
+	        <div id="scoreTeamA">0</div>
+	        <div id="scoreTeamB">0</div>
+	        <div class="teamBContainer">
+	            <div class="nameTeamB">BLUE</div>
+	            <div class="colorTeamB">
+	                <div class="colorTeamBbar1"></div>
+	                <div class="colorTeamBbar2"></div>
+	            </div>
+	        </div>  
+	    </div>
 
 		<!-- ------------- -->
 	    <!-- Skill Change Value -->
@@ -253,6 +277,7 @@
 	<script type="text/javascript" src="js/AI/PrecisionTimer.js"></script>
 	<script type="text/javascript" src="js/AI/Cgdi.js"></script>
 	<script type="text/javascript" src="js/skill.js"></script>
+	<script type="text/javascript" src="js/ScoreboardTimer.js"></script>
 	<script type="text/javascript" src="js/gameClient.js"></script>
 
 </html>

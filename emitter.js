@@ -3,11 +3,23 @@ class Emitter {
 
 	constructor(){};
 
-	static init( ws ) {
+	static init( wss ) {
 
-		this.ws = ws;
+		this.wss = wss;
 
 	};
+
+	static Broadcast( data ){
+		
+		// Broadcast to all.
+		this.wss.clients.forEach( function each( client ) {
+			if ( client.readyState === client.OPEN ) {
+				client.send( JSON.stringify( data ) );
+			};
+		}.bind( this ) );
+	
+	};
+
 
 	static SoccerBall( position ) {
 
@@ -19,9 +31,11 @@ class Emitter {
 				}
 			};
 
-		if ( this.ws.readyState == this.ws.OPEN ){
-			this.ws.send( JSON.stringify( data ) );
-		};
+		//if ( this.ws.readyState == this.ws.OPEN ){
+		//	this.ws.send( JSON.stringify( data ) );
+		//};
+
+		Emitter.Broadcast( data );
 
 	};    
 
@@ -41,9 +55,11 @@ class Emitter {
 				C: color.substring( 0, 1 )
 			};
 
-		if ( this.ws.readyState == this.ws.OPEN ){
-			this.ws.send( JSON.stringify( data ) );
-		};
+		//if ( this.ws.readyState == this.ws.OPEN ){
+		//	this.ws.send( JSON.stringify( data ) );
+		//};
+
+		Emitter.Broadcast( data );
 	
 	};
 
@@ -64,9 +80,11 @@ class Emitter {
 				C: color.substring( 0, 1 )
 			};
 
-		if ( this.ws.readyState == this.ws.OPEN ){
-			this.ws.send( JSON.stringify( data ) );
-		};
+		//if ( this.ws.readyState == this.ws.OPEN ){
+		//	this.ws.send( JSON.stringify( data ) );
+		//};
+
+		Emitter.Broadcast( data );
 	
 	};
 
@@ -77,9 +95,11 @@ class Emitter {
 				V: dataDb
 			};
 
-		if ( this.ws.readyState == this.ws.OPEN ){
-			this.ws.send( JSON.stringify( data ) );
-		};
+		//if ( this.ws.readyState == this.ws.OPEN ){
+		//	this.ws.send( JSON.stringify( data ) );
+		//};
+
+		Emitter.Broadcast( data );
 
 	}; 
 
